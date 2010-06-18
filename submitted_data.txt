@@ -172,4 +172,5 @@ Car: 0
 Fuel:
 0L:X0R5#X0R:0L
 
-Server crashed while I was trying this one.
+Checking node ( 0 , X0R5#X0R )
+unknown kind of node
