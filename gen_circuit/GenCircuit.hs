@@ -1,4 +1,5 @@
 import Maybe
+import List
 
 data Side = LeftSide | RightSide
     deriving Eq
@@ -64,6 +65,11 @@ gate = SubCircuit 1 2 2 f
                       [InternalAddress offset LeftSide,
                        InternalAddress offset RightSide])
 
+-- Subcircuit representing the output of the final circuit.
+output :: SubCircuit
+output = SubCircuit 0 1 0 f
+    where f offset = ([], [ExternalAddress], [])
+
 -- Rearrange the inputs to a subcircuit so that they appear in the
 -- order given by input_selector.  For example, if there are three
 -- inputs and input_selector == [1, 2, 0], this rotates the inputs so
@@ -104,6 +110,18 @@ const_0 = select_outputs [0] $ select_inputs [] inner
     where inner = swapped_gate `chain` gate `chain` swapped_gate `chain` gate `chain`
                   swapped_gate `chain` swapped_gate `chain` swapped_gate `chain` gate
 
+fix_junk :: SubCircuit -> SubCircuit
+fix_junk (SubCircuit size ins outs f) = SubCircuit size 0 0 f'
+    where f' 0 = (wires ++ new_wires, [], [])
+              where (wires, in_addrs, out_addrs) = f 0
+                    unconnected_ins = all_possible_addresses \\ map destination wires
+                    unconnected_outs = all_possible_addresses \\ map origin wires
+                    all_possible_addresses
+                        = [ExternalAddress] ++ concat [[InternalAddress g LeftSide, InternalAddress g RightSide]
+                                                           | g <- [0..(0+size-1)]]
+                    new_wires = zipWith Wire unconnected_outs unconnected_ins
+          f' _ = error "fix_junk called with nonzero offset"
+
 render_circuit :: SubCircuit -> [Gate]
 render_circuit (SubCircuit size ins outs f) = [gate_g g | g <- [0..(size-1)]]
     where (wires, in_addrs, out_addrs) = f 0
@@ -113,4 +131,4 @@ render_circuit (SubCircuit size ins outs f) = [gate_g g | g <- [0..(size-1)]]
           gate_g_r_output g = listToMaybe $ map destination $ filter (\w -> origin w == InternalAddress g RightSide) wires
           gate_g g = Gate (gate_g_l_input g) (gate_g_r_input g) (gate_g_l_output g) (gate_g_r_output g)
 
-main = print $ render_circuit const_0
+main = print $ render_circuit $ fix_junk $ const_0 `chain` output
