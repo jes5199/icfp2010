@@ -41,13 +41,28 @@ data SubCircuit = SubCircuit Int Int Int (Int -> ([Wire], [Address], [Address]))
 -- Chain two subcircuits by connecting the outputs of the first to the
 -- inputs of the second.
 chain :: SubCircuit -> SubCircuit -> SubCircuit
-chain (SubCircuit size1 ins1 outs1 f1) (SubCircuit size2 ins2 outs2 f2)
-  = SubCircuit (size1 + size2) ins1 outs2 f_composite
-    where f_composite offset = (wires1 ++ wires2 ++ connections, in1_addrs,
-                                out2_addrs)
+--chain (SubCircuit size1 ins1 outs1 f1) (SubCircuit size2 ins2 outs2 f2)
+--  = SubCircuit (size1 + size2) ins1 outs2 f_composite
+--    where f_composite offset = (wires1 ++ wires2 ++ connections, in1_addrs,
+--                                out2_addrs)
+--              where (wires1, in1_addrs, out1_addrs) = f1 offset
+--                    (wires2, in2_addrs, out2_addrs) = f2 (offset + size1)
+--                    connections = zipWith Wire out1_addrs in2_addrs
+chain c1@(SubCircuit _ _ outs1 _) c2@(SubCircuit _ ins2 _ _)
+    | outs1 == ins2 = gen_chain c1 [(n, n) | n <- [0..(outs1-1)]] c2
+    | otherwise = error "Tried to chain subcircuits with incompatible arity"
+
+gen_chain :: SubCircuit -> [(Int, Int)] -> SubCircuit -> SubCircuit
+gen_chain (SubCircuit size1 ins1 outs1 f1) selector (SubCircuit size2 ins2 outs2 f2)
+    = SubCircuit (size1 + size2) (ins1 + ins2 - length selector) (outs2 + outs1 - length selector) f_composite
+    where f_composite offset = (wires1 ++ wires2 ++ connections,
+                                in1_addrs ++ [in2_addrs !! n | n <- remaining_inputs2],
+                                [out1_addrs !! n | n <- remaining_outputs1] ++ out2_addrs)
               where (wires1, in1_addrs, out1_addrs) = f1 offset
                     (wires2, in2_addrs, out2_addrs) = f2 (offset + size1)
-                    connections = zipWith Wire out1_addrs in2_addrs
+                    connections = [Wire (out1_addrs !! m) (in2_addrs !! n) | (m, n) <- selector]
+                    remaining_inputs2 = [0..(ins2-1)] \\ map snd selector
+                    remaining_outputs1 = [0..(outs1-1)] \\ map fst selector
 
 -- Chain two subcircuits with a delay in between.
 chain_delay :: SubCircuit -> SubCircuit -> SubCircuit
@@ -72,6 +87,11 @@ gate = SubCircuit 1 2 2 f
 output :: SubCircuit
 output = SubCircuit 0 1 0 f
     where f offset = ([], [ExternalAddress], [])
+
+-- Subcircuit representing the input of the final circuit.
+input :: SubCircuit
+input = SubCircuit 0 0 1 f
+    where f offset = ([], [], [ExternalAddress])
 
 -- Rearrange the inputs to a subcircuit so that they appear in the
 -- order given by input_selector.  For example, if there are three
@@ -113,6 +133,9 @@ const_0 = select_outputs [0] $ select_inputs [] inner
     where inner = swapped_gate `chain` gate `chain` swapped_gate `chain` gate `chain`
                   swapped_gate `chain` swapped_gate `chain` swapped_gate `chain` gate
 
+identity :: SubCircuit
+identity = select_outputs [0] $ gen_chain const_0 [(0, 1)] gate
+
 fix_junk :: SubCircuit -> SubCircuit
 fix_junk (SubCircuit size ins outs f) = SubCircuit size 0 0 f'
     where f' 0 = (wires ++ new_wires, [], [])
@@ -143,4 +166,4 @@ showCircuit (circuit_in, gates, circuit_out) = showAddr circuit_in ++ ":\n" ++
                                                foldl (++) "" (intersperse ",\n" $ map show gates) ++
                                                ":\n" ++ showAddr circuit_out
 
-main = putStrLn $ showCircuit $ render_circuit $ fix_junk $ const_0 `chain` output
+main = putStrLn $ showCircuit $ render_circuit $ fix_junk $ input `chain` identity `chain` output
