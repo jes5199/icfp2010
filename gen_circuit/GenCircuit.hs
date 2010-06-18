@@ -125,7 +125,7 @@ fix_junk (SubCircuit size ins outs f) = SubCircuit size 0 0 f'
                     new_wires = zipWith Wire unconnected_outs unconnected_ins
           f' _ = error "fix_junk called with nonzero offset"
 
-render_circuit :: SubCircuit -> (Maybe Address, [Gate], Maybe Address)
+render_circuit :: SubCircuit -> Circuit
 render_circuit (SubCircuit size ins outs f) = (whole_circuit_input,
                                                [gate_g g | g <- [0..(size-1)]],
                                                whole_circuit_output)

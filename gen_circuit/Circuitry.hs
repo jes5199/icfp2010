@@ -23,3 +23,5 @@ showSide RightSide = "R"
 
 instance Show Gate where
     show (Gate a b c d) = showAddr a ++ showAddr b ++ "0#" ++ showAddr c ++ showAddr d
+
+type Circuit = (Maybe Address, [Gate], Maybe Address)
