@@ -1,0 +1,175 @@
+User name: vorpal
+Password: 817346361913013919142157626495100946450967820619337166341550
+
+Car: 0
+Fuel:
+0L:
+X0R0#X0R:
+0L
+
+circuit output starts with
+    02120112100002120
+this is an illegal prefix.
+
+Car: 0
+Fuel:
+0L:
+0RX0#X0R:
+0L
+
+checking node ( 0 , 0RX0#X0R )
+inconsistent input connection
+    ( 0R , 0R , 0L )
+
+Car: 0
+Fuel:
+0L:
+1RX0#X0R:
+0L
+
+checking node ( 0 , 1RX0#X0R )
+link not found
+    1R
+
+Car: 0
+Fuel:
+0L:
+0R0R0#X0R:
+0L
+
+checking node ( 0 , 0R0R0#X0R )
+inconsistent input connection
+    ( 0R , 0R , 0L )
+
+Car: 0
+Fuel:
+0L:
+X0R0#0RX:
+0L
+
+checking node ( 0 , X0R0#0RX )
+inconsistent input connection
+    ( 0R , X , 0R )
+
+
+Possible theory: X is only allowed on the LHS of a pair.
+
+Car: 0
+Fuel:
+1L:
+X0R0#X0R,
+0L1R0#0L1R:
+1L
+
+checking node ( 0 , X0R0#X0R )
+inconsistent input connection
+    ( X , 1L , 0L )
+
+Car: 0
+Fuel:
+19L:
+12R13R0#1R12R,
+14R0L0#4R9L,
+9R10R0#3L8L,
+2L17R0#5L9R,
+15R1L0#10R13R,
+3L18R0#6L15L,
+5L11R0#13L12L,
+19R16R0#11R8R,
+2R7R0#11L10L,
+1R3R0#18L2L,
+8R4L0#16L2R,
+8L7L0#15R6R,
+6R0R0#14L0L,
+6L4R0#14R0R,
+12L13L0#17L1L,
+5R11L0#16R4L,
+10L15L0#17R7R,
+14L16L0#18R3R,
+9L17L0#19R5R,
+X18L0#X7L:
+19L
+
+circuit output starts with
+    10221220002011011
+this is an illegal prefix.
+
+Car: 0
+Fuel:
+19L:
+12R13R0#1R12R,
+14R0L0#4R9L,
+9R10R0#3L8L,
+2L17R0#5L9R,
+15R1L0#10R13R,
+3L18R0#6L15L,
+5L11R0#13L12L,
+19R16R0#11R8R,
+7R2R0#11L10L,  ** note: I changed this one **
+1R3R0#18L2L,
+8R4L0#16L2R,
+8L7L0#15R6R,
+6R0R0#14L0L,
+6L4R0#14R0R,
+12L13L0#17L1L,
+5R11L0#16R4L,
+10L15L0#17R7R,
+14L16L0#18R3R,
+9L17L0#19R5R,
+X18L0#X7L:
+19L
+
+checking node ( 2 , 9R10R0#3L8L )
+inconsistent output connection
+    ( 8L , 7R , 2R )
+
+Car: 0
+Fuel:
+0L:
+X0R1#X0R:
+0L
+
+checking node ( 0 , X0R1#X0R )
+unknown kind of node
+
+Car: 0
+Fuel:
+0L:
+X0R2#X0R:
+0L
+
+checking node ( 0 , X0R2#X0R )
+unknown kind of node
+
+Car: 0
+Fuel:
+0L:
+X0R3#X0R:
+0L
+
+checking node ( 0 , X0R3#X0R )
+unknown kind of node
+
+Car: 0
+Fuel:
+0L:
+X0R4#X0R:
+0L
+
+checking node ( 0 , X0R4#X0R )
+unknown kind of node
+
+Car: 0
+Fuel:
+0L:
+X0R5#X0R:
+0L
+
+checking node ( 0 , X0R5#X0R )
+unknown kind of node
+
+Car: 0
+Fuel:
+0L:X0R5#X0R:0L
+
+Server crashed while I was trying this one.
