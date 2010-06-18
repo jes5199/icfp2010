@@ -8,6 +8,10 @@ data Address = InternalAddress Int Side -- e.g. "3R"
              | ExternalAddress -- "X"
     deriving Eq
 
+instance Show Address where
+    show (InternalAddress n s) = show n ++ showSide s
+    show ExternalAddress = "X"
+
 -- A wire is represented by the address of its origin and the address
 -- of its destination.
 data Wire = Wire Address Address
@@ -19,8 +23,7 @@ destination (Wire x y) = y
 data Gate = Gate (Maybe Address) (Maybe Address) (Maybe Address) (Maybe Address)
 
 showAddr Nothing = "__"
-showAddr (Just (InternalAddress n s)) = show n ++ showSide s
-showAddr (Just ExternalAddress) = "X"
+showAddr (Just addr) = show addr
 
 showSide LeftSide = "L"
 showSide RightSide = "R"
@@ -122,13 +125,22 @@ fix_junk (SubCircuit size ins outs f) = SubCircuit size 0 0 f'
                     new_wires = zipWith Wire unconnected_outs unconnected_ins
           f' _ = error "fix_junk called with nonzero offset"
 
-render_circuit :: SubCircuit -> [Gate]
-render_circuit (SubCircuit size ins outs f) = [gate_g g | g <- [0..(size-1)]]
+render_circuit :: SubCircuit -> (Maybe Address, [Gate], Maybe Address)
+render_circuit (SubCircuit size ins outs f) = (whole_circuit_input,
+                                               [gate_g g | g <- [0..(size-1)]],
+                                               whole_circuit_output)
     where (wires, in_addrs, out_addrs) = f 0
           gate_g_l_input g = listToMaybe $ map origin $ filter (\w -> destination w == InternalAddress g LeftSide) wires
           gate_g_r_input g = listToMaybe $ map origin $ filter (\w -> destination w == InternalAddress g RightSide) wires
           gate_g_l_output g = listToMaybe $ map destination $ filter (\w -> origin w == InternalAddress g LeftSide) wires
           gate_g_r_output g = listToMaybe $ map destination $ filter (\w -> origin w == InternalAddress g RightSide) wires
           gate_g g = Gate (gate_g_l_input g) (gate_g_r_input g) (gate_g_l_output g) (gate_g_r_output g)
+          whole_circuit_input = listToMaybe $ map destination $ filter (\w -> origin w == ExternalAddress) wires
+          whole_circuit_output = listToMaybe $ map origin $ filter (\w -> destination w == ExternalAddress) wires
 
-main = print $ render_circuit $ fix_junk $ const_0 `chain` output
+showCircuit :: (Maybe Address, [Gate], Maybe Address) -> String
+showCircuit (circuit_in, gates, circuit_out) = showAddr circuit_in ++ ":\n" ++
+                                               foldl (++) "" (intersperse ",\n" $ map show gates) ++
+                                               ":\n" ++ showAddr circuit_out
+
+main = putStrLn $ showCircuit $ render_circuit $ fix_junk $ const_0 `chain` output
