@@ -1,35 +1,12 @@
 import Maybe
 import List
-
-data Side = LeftSide | RightSide
-    deriving Eq
-
-data Address = InternalAddress Int Side -- e.g. "3R"
-             | ExternalAddress -- "X"
-    deriving Eq
-
-instance Show Address where
-    show (InternalAddress n s) = show n ++ showSide s
-    show ExternalAddress = "X"
+import Circuitry
 
 -- A wire is represented by the address of its origin and the address
 -- of its destination.
 data Wire = Wire Address Address
 origin (Wire x y) = x
 destination (Wire x y) = y
-
--- A gate is represented by the two addresses that the inputs connect
--- to, and the two addresses that the outputs connect to.
-data Gate = Gate (Maybe Address) (Maybe Address) (Maybe Address) (Maybe Address)
-
-showAddr Nothing = "__"
-showAddr (Just addr) = show addr
-
-showSide LeftSide = "L"
-showSide RightSide = "R"
-
-instance Show Gate where
-    show (Gate a b c d) = showAddr a ++ showAddr b ++ "0#" ++ showAddr c ++ showAddr d
 
 -- A subcircuit is represented by a size (in gates), a number of
 -- inputs, a number of outputs, and a function.  The function takes a
