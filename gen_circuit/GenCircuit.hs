@@ -1,35 +1,13 @@
 import Maybe
 import List
-
-data Side = LeftSide | RightSide
-    deriving Eq
-
-data Address = InternalAddress Int Side -- e.g. "3R"
-             | ExternalAddress -- "X"
-    deriving Eq
-
-instance Show Address where
-    show (InternalAddress n s) = show n ++ showSide s
-    show ExternalAddress = "X"
+import Circuitry
+import Test.HUnit
 
 -- A wire is represented by the address of its origin and the address
 -- of its destination.
 data Wire = Wire Address Address
 origin (Wire x y) = x
 destination (Wire x y) = y
-
--- A gate is represented by the two addresses that the inputs connect
--- to, and the two addresses that the outputs connect to.
-data Gate = Gate (Maybe Address) (Maybe Address) (Maybe Address) (Maybe Address)
-
-showAddr Nothing = "__"
-showAddr (Just addr) = show addr
-
-showSide LeftSide = "L"
-showSide RightSide = "R"
-
-instance Show Gate where
-    show (Gate a b c d) = showAddr a ++ showAddr b ++ "0#" ++ showAddr c ++ showAddr d
 
 -- A subcircuit is represented by a size (in gates), a number of
 -- inputs, a number of outputs, and a function.  The function takes a
@@ -175,7 +153,7 @@ fix_junk (SubCircuit size ins outs f) = SubCircuit size 0 0 f'
                     new_wires = zipWith Wire unconnected_outs unconnected_ins
           f' _ = error "fix_junk called with nonzero offset"
 
-render_circuit :: SubCircuit -> (Maybe Address, [Gate], Maybe Address)
+render_circuit :: SubCircuit -> Circuit
 render_circuit (SubCircuit size ins outs f) = (whole_circuit_input,
                                                [gate_g g | g <- [0..(size-1)]],
                                                whole_circuit_output)
@@ -193,4 +171,11 @@ showCircuit (circuit_in, gates, circuit_out) = showAddr circuit_in ++ ":\n" ++
                                                foldl (++) "" (intersperse ",\n" $ map show gates) ++
                                                ":\n" ++ showAddr circuit_out
 
-main = putStrLn $ showCircuit $ render_circuit $ fix_junk $ input `chain` identity `chain` output
+construct1to1Circuit :: SubCircuit -> Circuit
+construct1to1Circuit sub = render_circuit $ fix_junk $ input `chain` sub `chain` output
+
+tests = test [ "identity" ~: (showCircuit $ construct1to1Circuit identity) ~=? expected ]
+    where expected = "8L:\n7R8R0#1R1L,\n0R0L0#2L2R,\n1L1R0#3R3L,\n2R2L0#4L4R,\n3L3R0#5R5L,\n4R4L0#6R6L," ++ 
+                     "\n5R5L0#7R7L,\n6R6L0#8R0L,\nX7L0#X0R:\n8L"
+
+main = putStrLn $ showCircuit $ construct1to1Circuit identity
