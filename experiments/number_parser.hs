@@ -76,10 +76,11 @@ parseTritList func ds = subparse len rest
 
 parseFuel = parseTritList $ parseTritList $ parseTritList $ parseTritArray
 
-parseCar ds = ((first_section, sep, second_section), rest)
-    where (second_section, rest) = (parseTritList $ parseTritArray) rest2
-          (sep:rest2) = rest1
-          (first_section, rest1) = (parseTritList $ parseTritList $ parseTritArray) ds
+parseCar = parseTritList $ parseCylinder
+    where parseCylinder ds = ((upper_pipe, main_flag, lower_pipe), rest3)
+           where (upper_pipe,rest1) = parseTritList parseTritArray ds
+                 (main_flag:rest2)  = rest1
+                 (lower_pipe,rest3) = parseTritList parseTritArray rest2
 
 --  3 10   +0
 --  4 11 
