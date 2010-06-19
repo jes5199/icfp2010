@@ -10,7 +10,7 @@ if ARGV.delete('-h')
   abort "usage: submit_fuel [car number]"
 end
 
-abort %{Error: STDIN empty. Must provide a circuit. Example use:\n  echo "0" | ./gen_circuit/CreateSubmission | ./bin/submit_fuel} if circuit.empty?
+abort %{Error: STDIN empty. Must provide a circuit. Example use:\n  echo "0" | ./bin/CreateSubmission | ./bin/submit_fuel} if circuit.empty?
 
 begin
   require 'mechanize'
