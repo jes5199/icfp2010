@@ -1,3 +1,5 @@
+module GenCircuit where
+
 import Maybe
 import List
 import Circuitry
@@ -171,8 +173,8 @@ showCircuit (circuit_in, gates, circuit_out) = showAddr circuit_in ++ ":\n" ++
                                                foldl (++) "" (intersperse ",\n" $ map show gates) ++
                                                ":\n" ++ showAddr circuit_out
 
-construct1to1Circuit :: SubCircuit -> Circuit
-construct1to1Circuit sub = render_circuit $ fix_junk $ input `chain` sub `chain` output
+constructCircuit :: SubCircuit -> Circuit
+constructCircuit = render_circuit . fix_junk
 
 emitter :: [Int] -> SubCircuit
 emitter = fst . emitterWithCarry
@@ -188,4 +190,7 @@ tests = test [ "identity" ~: (showCircuit $ construct1to1Circuit identity) ~=? e
     where expected = "8L:\n7R8R0#1R1L,\n0R0L0#2L2R,\n1L1R0#3R3L,\n2R2L0#4L4R,\n3L3R0#5R5L,\n4R4L0#6R6L," ++ 
                      "\n5R5L0#7R7L,\n6R6L0#8R0L,\nX7L0#X0R:\n8L"
 
-main = putStrLn $ showCircuit $ construct1to1Circuit identity
+construct1to1Circuit :: SubCircuit -> Circuit
+construct1to1Circuit sub = constructCircuit $ input `chain` sub `chain` output
+
+--main = putStrLn $ showCircuit $ construct1to1Circuit identity
