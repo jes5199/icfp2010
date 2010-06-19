@@ -48,6 +48,15 @@ parseTritArray :: String -> (String, String)
 parseTritArray ds = splitAt len rest
     where (len, rest) = parseSingleTritCode ds
 
+parseTritList :: (String -> (a, String)) -> String -> ([a], String)
+parseTritList func ds = subparse len rest
+    where (len, rest) = parseSingleTritCode ds
+          subparse 0 sub_rest = ([], sub_rest)
+          subparse n sub_rest = ((func_val : next_val) , next_rest)
+            where (next_val, next_rest)   = subparse (n-1) func_rest
+                  (func_val, func_rest) = func sub_rest
+
+parseFuel = parseTritList $ parseTritList $ parseTritList $ parseTritArray
 
 --  3 10   +0
 --  4 11 
