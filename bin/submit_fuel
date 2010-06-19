@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby -rubygems
+
+username = 'vorpal'
+password = '817346361913013919142157626495100946450967820619337166341550'
+
+circuit = STDIN.read.strip
+car = ARGV[0] || '2416'
+
+if ARGV.delete('-h')
+  abort "usage: submit_fuel [car number]"
+end
+
+abort %{Error: STDIN empty. Must provide a circuit. Example use:\n  echo "0" | ./gen_circuit/CreateSubmission | ./bin/submit_fuel} if circuit.empty?
+
+begin
+  require 'mechanize'
+rescue LoadError
+  abort 'Error: gem install mechanize'
+end
+
+agent = Mechanize.new
+
+# LOGIN
+page = agent.get 'http://icfpcontest.org/icfp10/login'
+form = page.forms.first
+form.j_username = username
+form.j_password = password
+agent.submit form
+
+# Submit Fuel to problem 2416
+puts  "car: #{car}"
+page = agent.get "http://icfpcontest.org/icfp10/instance/#{car}/solve/form"
+form = page.forms.first
+form.contents = circuit
+page = agent.submit form
+
+# Server output
+puts page.search('//pre').text
