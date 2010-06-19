@@ -1,3 +1,4 @@
+module NumberParser where
 import Numeric
 import Data.Char
 
