@@ -179,4 +179,3 @@ constructCircuit = render_circuit . fix_junk
 construct1to1Circuit :: SubCircuit -> Circuit
 construct1to1Circuit sub = constructCircuit $ input `chain` sub `chain` output
 
---main = putStrLn $ showCircuit $ construct1to1Circuit identity
