@@ -12,5 +12,5 @@ log=$dir/log/spam_cars.txt
 for CAR in `cat $data`;  do 
     date | tee -a $log
     echo $CAR $1 | tee -a $log
-    $dir/bin/fuel_pipe1 $CAR $1 2>&1 | tee -a $log
+    $dir/bin/fuel_pipe $CAR $1 2>&1 | tee -a $log
 done
