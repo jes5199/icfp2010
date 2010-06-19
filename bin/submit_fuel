@@ -31,6 +31,7 @@ agent.submit form
 # Submit Fuel to problem 2416
 puts  "car: #{car}"
 page = agent.get "http://icfpcontest.org/icfp10/instance/#{car}/solve/form"
+puts page.search('//div[@id="roo_solution_instance"]')
 form = page.forms.first
 form.contents = circuit
 page = agent.submit form
