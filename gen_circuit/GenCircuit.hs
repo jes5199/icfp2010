@@ -181,9 +181,23 @@ emitterPlanner []     = []
 emitterPlanner (x:xs) = x:(emitterPlanner $ map (\n-> (n-x) `mod` 3) xs) 
 
 emitter :: [Int] -> SubCircuit
-emitter xs = foldl1 (flip chain_delay) (map plus_ plan)
-    where plan = emitterPlanner xs
+--emitter xs = foldl1 (flip chain_delay) (map plus_ plan)
+--    where plan = emitterPlanner xs
+emitter = bi_emitter
 
 construct1to1Circuit :: SubCircuit -> Circuit
 construct1to1Circuit sub = constructCircuit $ input `chain` sub `chain` output
 
+-- Create a circuit that cycles n steps through the patterns (00, 20, 22, ...)
+bi_plus :: Int -> SubCircuit
+bi_plus 1 = swapped_gate
+bi_plus 2 = swapped_gate `chain` swapped_gate
+bi_plus 0 = swapped_gate `chain` swapped_gate `chain` swapped_gate
+
+-- A circuit that converts 00 -> 1, 20 -> 2, 22 -> 0
+bi_to_single :: SubCircuit
+bi_to_single = select_outputs [0] $ select_inputs [1, 0] $ gate `chain` gate
+
+bi_emitter :: [Int] -> SubCircuit
+bi_emitter xs = select_inputs [0] $ foldl1 (flip chain_delay) (map bi_plus plan) `chain` bi_to_single
+    where plan = emitterPlanner (map (\n -> (n+2) `mod` 3) xs)
