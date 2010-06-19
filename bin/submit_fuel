@@ -1,4 +1,5 @@
-#!/usr/bin/env ruby -rubygems
+#!/usr/bin/env ruby
+require 'rubygems'
 
 username = 'vorpal'
 password = '817346361913013919142157626495100946450967820619337166341550'
