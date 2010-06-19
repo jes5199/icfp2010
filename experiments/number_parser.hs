@@ -55,12 +55,19 @@ parsePart digits = (asTrinary 0 digits) + (offsetByLength len)
 
 offsetByLength n = 3^(n-1) - 3
          
+asTrinary acc []     = acc
 asTrinary acc [d]    = acc + (num d)
 asTrinary acc (d:ds) = asTrinary ( (acc+(num d)) *3) ds 
 
 num '0' = 0
 num '1' = 1
 num '2' = 2
+
+intSchemeTwo :: String -> Integer
+intSchemeTwo s = x + tri
+    where len = length s
+          x   = (3^len - 1) `div` 2
+          tri = asTrinary 0 s
 
 parseTritArray :: String -> (String, String)
 parseTritArray ds = splitAt len rest
