@@ -114,10 +114,10 @@ const_0 = select_outputs [0] $ select_inputs [] inner
                   swapped_gate `chain` swapped_gate `chain` swapped_gate `chain` gate
 
 const_2 :: SubCircuit
-const_2 = select_outputs [1] $ gen_chain const_0 [(0, 0)] gate
+const_2 = select_outputs [1] $ select_inputs [] $ gen_chain const_0 [(0, 0)] gate
 
 const_1 :: SubCircuit
-const_1 = select_outputs [0] $ gen_chain const_0 [(0, 0)] $ gen_chain const_2 [(0, 1)] gate
+const_1 = select_outputs [0] $ select_inputs [] $ gen_chain const_0 [(0, 0)] $ gen_chain const_2 [(0, 1)] gate
 
 identity :: SubCircuit
 identity = select_outputs [0] $ gen_chain const_0 [(0, 1)] gate
