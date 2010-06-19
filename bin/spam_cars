@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+if [ -z "$1" ] ; then
+    echo "please supply a fuel as the argument"
+    exit
+fi
+
+dir=`dirname $0`/../
+data=$dir/all_cars.txt
+log=$dir/log/spam_cars.txt
+for CAR in `cat $data`;  do 
+    date | tee -a $log
+    echo $CAR $1 | tee -a $log
+    $dir/bin/fuel_pipe1 $CAR $1 2>&1 | tee -a $log
+done
