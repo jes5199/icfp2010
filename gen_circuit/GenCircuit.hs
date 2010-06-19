@@ -143,4 +143,7 @@ showCircuit (circuit_in, gates, circuit_out) = showAddr circuit_in ++ ":\n" ++
                                                foldl (++) "" (intersperse ",\n" $ map show gates) ++
                                                ":\n" ++ showAddr circuit_out
 
-main = putStrLn $ showCircuit $ render_circuit $ fix_junk $ input `chain` identity `chain` output
+construct1to1Circuit :: SubCircuit -> Circuit
+construct1to1Circuit sub = render_circuit $ fix_junk $ input `chain` sub `chain` output
+
+main = putStrLn $ showCircuit $ construct1to1Circuit identity
