@@ -73,6 +73,10 @@ parseTritArray :: String -> (String, String)
 parseTritArray ds = splitAt len rest
     where (len, rest) = parseSingleTritCode ds
 
+parseIntSchemeTwo :: String -> (Integer, String)
+parseIntSchemeTwo ds = (intSchemeTwo $ val, rest)
+    where (val, rest) = parseTritArray ds
+
 parseTritList :: (String -> (a, String)) -> String -> ([a], String)
 parseTritList func ds = subparse len rest
     where (len, rest) = parseSingleTritCode ds
@@ -81,13 +85,13 @@ parseTritList func ds = subparse len rest
             where (next_val, next_rest)   = subparse (n-1) func_rest
                   (func_val, func_rest) = func sub_rest
 
-parseFuel = parseTritList $ parseTritList $ parseTritList $ parseTritArray
+parseFuel = parseTritList $ parseTritList $ parseTritList $ parseIntSchemeTwo
 
 parseCar = parseTritList $ parseCylinder
     where parseCylinder ds = ((upper_pipe, main_flag, lower_pipe), rest3)
-           where (upper_pipe,rest1) = parseTritList parseTritArray ds
+           where (upper_pipe,rest1) = parseTritList parseIntSchemeTwo ds
                  (main_flag:rest2)  = rest1
-                 (lower_pipe,rest3) = parseTritList parseTritArray rest2
+                 (lower_pipe,rest3) = parseTritList parseIntSchemeTwo rest2
 
 --  3 10   +0
 --  4 11 
