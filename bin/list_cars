@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+
+begin
+  require 'mechanize'
+rescue LoadError
+  abort 'Error: gem install mechanize'
+end
+
+agent = Mechanize.new
+
+# Submit Fuel to problem 2416
+page = agent.get "http://icfpcontest.org/icfp10/score/instanceTeamCount"
+page.search('//td[1]').each do |car|
+  puts car.text
+end
+
