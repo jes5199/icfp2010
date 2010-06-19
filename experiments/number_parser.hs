@@ -93,6 +93,11 @@ parseCar = parseTritList $ parseCylinder
                  (main_flag:rest2)  = rest1
                  (lower_pipe,rest3) = parseTritList parseIntSchemeTwo rest2
 
+type Car = [([Integer], Char, [Integer])]
+
+prettyCar :: Car -> String
+prettyCar car = concat [ "Chamber " ++ show i ++ " (" ++ show flag ++ ")" ++ "\n  upper pipe: " ++ show upper ++ "\n  lower pipe: " ++ show lower ++ "\n" | ((upper,flag,lower), i) <- zip car [0..] ]
+
 --  3 10   +0
 --  4 11 
 --  5 12
