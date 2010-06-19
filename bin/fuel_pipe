@@ -16,4 +16,4 @@ SCRIPT_DIR=`dirname $0`
 CAR_NUM=$1
 FUEL_STREAM=$2
 
-echo $FUEL_STREAM | $SCRIPT_DIR/CreateSubmission | $SCRIPT_DIR/submit_fuel
+echo $FUEL_STREAM | $SCRIPT_DIR/CreateSubmission | $SCRIPT_DIR/submit_fuel $CAR_NUM
