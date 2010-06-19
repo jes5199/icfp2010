@@ -1,11 +1,27 @@
-parseTrits :: String -> [Int]
-parseTrits [] = []
-parseTrits ('0':xs)         = 0:parseTrits xs
-parseTrits ('1':xs)         = 1:parseTrits xs
-parseTrits ('2':'0':xs)     = -1:parseTrits xs
-parseTrits ('2':'1':xs)     = -2:parseTrits xs
-parseTrits ('2':'2':'0':xs) = 2:parseTrits xs
-parseTrits s@('2':'2':xs)   = parsed : parseTrits rest
+parseSingleTritCode :: String -> (Int, String)
+parseSingleTritCode [] = (-3, [])
+parseSingleTritCode ('0':xs)         = (0,xs)
+parseSingleTritCode ('1':xs)         = (1,xs)
+parseSingleTritCode ('2':'0':xs)     = (-1,xs)
+parseSingleTritCode ('2':'1':xs)     = (-2,xs)
+parseSingleTritCode ('2':'2':'0':xs) = (2,xs)
+parseSingleTritCode s@('2':'2':xs)   = (parsed,rest)
+    where size    = (twos `div` 2) + 1
+          parsed  = parsePart digits
+          digits  = take size after2s
+          rest    = drop size after2s
+          after2s = drop twos s
+          twos    = howManyTwos s
+parseSingleTritCode rest = error $ show rest
+
+parseTritsNaive :: String -> [Int]
+parseTritsNaive [] = []
+parseTritsNaive ('0':xs)         = 0:parseTritsNaive xs
+parseTritsNaive ('1':xs)         = 1:parseTritsNaive xs
+parseTritsNaive ('2':'0':xs)     = -1:parseTritsNaive xs
+parseTritsNaive ('2':'1':xs)     = -2:parseTritsNaive xs
+parseTritsNaive ('2':'2':'0':xs) = 2:parseTritsNaive xs
+parseTritsNaive s@('2':'2':xs)   = parsed : parseTritsNaive rest
     where size    = (twos `div` 2) + 1
           parsed  = parsePart digits
           digits  = take size after2s
@@ -13,7 +29,7 @@ parseTrits s@('2':'2':xs)   = parsed : parseTrits rest
           after2s = drop twos s
           twos    = howManyTwos s
     
-parseTrits rest = error $ show rest
+parseTritsNaive rest = error $ show rest
 
 parsePart :: String -> Int
 parsePart digits = (asTrinary 0 digits) + (offsetByLength len)
@@ -27,6 +43,11 @@ asTrinary acc (d:ds) = asTrinary ( (acc+(num d)) *3) ds
 num '0' = 0
 num '1' = 1
 num '2' = 2
+
+parseTritArray :: String -> (String, String)
+parseTritArray ds = splitAt len rest
+    where (len, rest) = parseSingleTritCode ds
+
 
 --  3 10   +0
 --  4 11 
