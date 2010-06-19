@@ -1,3 +1,21 @@
+import Numeric
+import Data.Char
+
+tritEncode :: Int -> String
+tritEncode 0 = "0"
+tritEncode 1 = "1"
+tritEncode 2 = "220"
+tritEncode i = encoded
+    where len = 1 + (floor $ logBase 3 (fromInteger $ toInteger $ i+3))
+          base = 3 ^ len
+          mod = i + 3 - base`div`3
+          j = base + mod
+          based = inBase3 j
+          encoded = (replicate ((len-1) * 2) '2') ++ (drop 1 based)
+
+inBase3 = showIntAtBase 3 intToDigit `flip` ""
+
+
 parseSingleTritCode :: String -> (Int, String)
 parseSingleTritCode [] = (-3, [])
 parseSingleTritCode ('0':xs)         = (0,xs)
