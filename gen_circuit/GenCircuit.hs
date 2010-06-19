@@ -176,15 +176,13 @@ showCircuit (circuit_in, gates, circuit_out) = showAddr circuit_in ++ ":\n" ++
 constructCircuit :: SubCircuit -> Circuit
 constructCircuit = render_circuit . fix_junk
 
-emitter :: [Int] -> SubCircuit
-emitter = fst . emitterWithCarry
+emitterPlanner :: [Int] -> [Int]
+emitterPlanner []     = []
+emitterPlanner (x:xs) = x:(emitterPlanner $ map (\n-> (n-x) `mod` 3) xs) 
 
-emitterWithCarry :: [Int] -> (SubCircuit, Int)
-emitterWithCarry (x:[]) = (plus_ x, x)
-emitterWithCarry (x:xs) = (new_circuit, new_carry)
-    where new_circuit = (plus_ new_carry ) `chain_delay` prev_circuit
-          new_carry   = x - carry
-          (prev_circuit, carry) = emitterWithCarry xs
+emitter :: [Int] -> SubCircuit
+emitter xs = foldl1 (flip chain_delay) (map plus_ plan)
+    where plan = emitterPlanner xs
 
 construct1to1Circuit :: SubCircuit -> Circuit
 construct1to1Circuit sub = constructCircuit $ input `chain` sub `chain` output

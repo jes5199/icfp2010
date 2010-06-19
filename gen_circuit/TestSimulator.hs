@@ -12,8 +12,8 @@ test_const_n n sub = ("const" ++ show n) ~: simulate (constructCircuit $ sub `ch
 
 test_identity = "identity" ~: simulate (construct1to1Circuit identity) contest_input ~?= contest_input
 
-emitter_list = [1,2,0,0,2,3,2,2,2,1] -- Arbitary
-test_emitter = "emitter" ~: simulate (construct1to1Circuit $ emitter emitter_list) contest_input ~?= emitter_list
+emitter_list = [1,2,0,0,2,0,2,2,2,1,1,2,2,1,2] -- Arbitary
+test_emitter = "emitter" ~: ( take (length emitter_list) $ simulate (construct1to1Circuit $ emitter emitter_list) contest_input ) ~?= emitter_list
 
 tests = test [ test_identity_string, test_const_n 0 const_0, test_const_n 1 const_1, test_const_n 2 const_2,
                test_identity, test_emitter ]
