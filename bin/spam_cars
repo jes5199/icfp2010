@@ -6,6 +6,8 @@ if [ -z "$1" ] ; then
     exit
 fi
 
+make
+
 dir=`dirname $0`/../
 data=$dir/all_cars.txt
 log=$dir/log/spam_cars.txt
