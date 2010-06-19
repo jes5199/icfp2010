@@ -113,8 +113,35 @@ const_0 = select_outputs [0] $ select_inputs [] inner
     where inner = swapped_gate `chain` gate `chain` swapped_gate `chain` gate `chain`
                   swapped_gate `chain` swapped_gate `chain` swapped_gate `chain` gate
 
+const_2 :: SubCircuit
+const_2 = select_outputs [1] $ gen_chain const_0 [(0, 0)] gate
+
+const_1 :: SubCircuit
+const_1 = select_outputs [0] $ gen_chain const_0 [(0, 0)] $ gen_chain const_2 [(0, 1)] gate
+
 identity :: SubCircuit
 identity = select_outputs [0] $ gen_chain const_0 [(0, 1)] gate
+
+plus_0 = identity
+
+plus_1 :: SubCircuit
+plus_1 = select_outputs [0] $ gen_chain const_2 [(0, 1)] gate
+
+plus_2 :: SubCircuit
+plus_2 = select_outputs [0] $ gen_chain const_1 [(0, 1)] gate
+
+plus_ :: Int -> SubCircuit
+plus_ 0 = plus_0
+plus_ 1 = plus_1
+plus_ 2 = plus_2
+plus_ x = plus_ (x `mod` 3)
+
+const_ :: Int -> SubCircuit
+const_ 0 = const_0
+const_ 1 = const_1
+const_ 2 = const_2
+const_ x = const_ (x `mod` 3)
+
 
 fix_junk :: SubCircuit -> SubCircuit
 fix_junk (SubCircuit size ins outs f) = SubCircuit size 0 0 f'
