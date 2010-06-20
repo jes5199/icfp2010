@@ -1,0 +1,18 @@
+#!/bin/bash
+
+dir=`dirname $0`/../
+data=$dir/data/solutions/
+
+for SOLUTION in $data* ; do
+    CAR_ID=`basename $SOLUTION`
+
+    if [ ! -f "$dir/data/submitted/$CAR_ID" ] ; then
+        $dir/bin/fuel_pipe $CAR_ID `cat $SOLUTION` > $dir/data/solution_responses/$CAR_ID
+        if grep -q "this is a legal prefix"  $dir/data/solution_responses/$CAR_ID ; then
+            echo "sucessfully submitted car $CAR_ID"
+            cat $SOLUTION > $dir/data/submitted/$CAR_ID
+        else
+            echo "failed to submit car $CAR_ID"
+        fi
+    fi
+done
