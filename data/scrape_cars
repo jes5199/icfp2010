@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+def cars_for(id)
+  puts "Cars for #{id}"
+  user = 'vorpal'
+  pass = '817346361913013919142157626495100946450967820619337166341550'
+
+  curl = "curl -d 'G0=#{id}' http://nfa.imn.htwk-leipzig.de/recent_cars/#hotspot"
+  puts curl
+  html = `#{curl}`
+  html.gsub('&quot;', '"').scan(/\s+>\(.+/).map do |line|
+    quoted = /"([^"]+)"/
+    id, _date, spec = line.scan(/\((\d+),#{quoted},#{quoted}/).flatten
+    [ id.to_i, spec]
+  end
+end
+
+def write_cars(id)
+  puts "Writing cars starting with #{id}"
+  cars = cars_for(id)
+
+  return nil if cars.flatten.empty?
+
+  cars.each do |id, spec|
+    fh = File.join(File.dirname(__FILE__), 'cars', id.to_s)
+    File.open(fh, 'w') do |f|
+      STDOUT.puts "Writing car #{id}: #{spec.length} trits"
+      f.puts spec
+    end unless File.exists?(fh)
+  end
+
+  return cars.last.first
+end
+
+id = 0
+while id
+  id = write_cars(id)
+end
