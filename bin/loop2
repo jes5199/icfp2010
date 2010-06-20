@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while true ; do
+    git pull
+    time ./bin/submit_solutions
+    git add ./data
+    git commit -m 'data'
+done | tee -a log/loop2.log
