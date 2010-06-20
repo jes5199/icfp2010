@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while true do
+    git pull
+    make
+    ./data/scrape_cars
+    ./bin/solve_all_cars
+    ./bin/submit_solutions
+done
