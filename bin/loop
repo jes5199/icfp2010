@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while true do
+while true ; do
     git pull
     make
     ./data/scrape_cars
