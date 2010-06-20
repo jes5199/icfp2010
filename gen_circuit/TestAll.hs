@@ -1,5 +1,7 @@
 import Simulator
 import GenCircuit
+import CarParts
+import Solver
 
 import Test.HUnit
 
@@ -15,8 +17,22 @@ test_identity = "identity" ~: simulate (construct1to1Circuit identity) contest_i
 emitter_list = [1,2,0,0,2,0,2,2,2,1,1,2,2,1,2] -- Arbitary
 test_emitter = "emitter" ~: ( take (length emitter_list) $ simulate (construct1to1Circuit $ emitter emitter_list) contest_input ) ~?= emitter_list
 
+test_car_solve :: Car -> Maybe Fuel -> Test
+test_car_solve car mfuel = name ~: solve car ~?= mfuel
+    where name = "test_car_solve " ++ show car ++ " " ++ showsPrec 20 mfuel []
+
+car_solve_tests = "car_solve_tests" ~: test
+                  [test_car_solve [] (Just []),
+                   test_car_solve [([0,0],0,[0])] (Just [[[2]]]),
+                   test_car_solve [([0,0,1],0,[0,1])] (Just [[[2]],[[1]]]),
+                   test_car_solve [([0,1,2,3,0,0,0,0],0,[0,1,2,3,0,0])] (Just [[[2]],[[1]],[[1]],[[1]]]),
+                   test_car_solve [([0,1,2,3,4,0,0,0,0],0,[0,1,2,3,4,0,0])] (Just [[[2]],[[1]],[[1]],[[1]],[[1]]]),
+                   test_car_solve [([0],0,[1]),([2],1,[0]),([1,0],1,[2]),([2,0],1,[0,1,2])] (Just [[[2]],[[1]],[[2]]])
+                  ]
+
+
 tests = test [ test_identity_string, test_const_n 0 const_0, test_const_n 1 const_1, test_const_n 2 const_2,
-               test_identity, test_emitter ]
+               test_identity, test_emitter, car_solve_tests ]
 
 main = do
   putStrLn "=========="
