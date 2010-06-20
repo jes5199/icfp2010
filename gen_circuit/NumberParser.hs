@@ -3,6 +3,7 @@ import Numeric
 import Data.Char
 import List
 import CarParts
+import Matrices
 
 tritEncode :: Integer -> String
 tritEncode 0 = "0"
@@ -84,16 +85,6 @@ showCarAsEquations = concat . intersperse "\n" . map chamberToEquation
 
 showFuelAsMatrices :: Fuel -> String
 showFuelAsMatrices fuel = concat [[name] ++ ":\n" ++ showMatrix value | (name, value) <- zip ['A'..] fuel]
-    where stringizeMatrix :: [[Integer]] -> [[String]]
-          stringizeMatrix = map (map show)
-          measureColumns :: [[String]] -> [Int]
-          measureColumns = foldr1 (zipWith max) . map (map length)
-          layoutRow :: [Int] -> [String] -> String
-          layoutRow widths row = "[" ++ (concat $ intersperse " " $ zipWith justify widths row) ++ "]"
-          justify :: Int -> String -> String
-          justify n s = replicate (n - length s) ' ' ++ s
-          showMatrix :: [[Integer]] -> String
-          showMatrix m = unlines $ map (layoutRow $ measureColumns sm) sm where sm = stringizeMatrix m
 
 --  3 10   +0
 --  4 11 
