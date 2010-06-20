@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta content="IE=8" http-equiv="X-UA-Compatible"/><link href="/icfp10/static/styles/standard.css;jsessionid=F73187A8D69201C537DFB61EF3667021" media="screen" type="text/css" rel="stylesheet"></link><link href="/icfp10/resources/dijit/themes/tundra/tundra.css;jsessionid=F73187A8D69201C537DFB61EF3667021" type="text/css" rel="stylesheet"></link><link href="/icfp10/static/images/favicon.ico;jsessionid=F73187A8D69201C537DFB61EF3667021" rel="SHORTCUT ICON"/><script type="text/javascript">
+			function readCookie(name) {
+				var nameEQ = name + '=';
+				var ca = document.cookie.split(';');
+				for(var i=0;i < ca.length;i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1,c.length);
+					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+				return null;
+			}
+			var djConfig={locale:readCookie('locale')}; 
+		</script><script type="text/javascript" src="/icfp10/resources/dojo/dojo.js;jsessionid=F73187A8D69201C537DFB61EF3667021"></script><script type="text/javascript" src="/icfp10/resources/spring/Spring.js;jsessionid=F73187A8D69201C537DFB61EF3667021"></script><script type="text/javascript" src="/icfp10/resources/spring/Spring-Dojo.js;jsessionid=F73187A8D69201C537DFB61EF3667021"></script><script type="text/javascript" language="JavaScript">dojo.require("dojo.parser");</script><title>ICFP Programming Contest 2010</title></head><body class="tundra spring"><div id="wrapper"><div version="2.0" id="menu"><ul id="roo_menu"><li id="web_mvc_jsp_auth_category"><h2>Team</h2><ul><li id="web_mvc_jsp_create_auth_menu_item"><a href="/icfp10/static/j_spring_security_logout;jsessionid=F73187A8D69201C537DFB61EF3667021">vorpal: Logout</a><a href="/icfp10/teamdetails/form;jsessionid=F73187A8D69201C537DFB61EF3667021">Update Team Details</a></li></ul></li><li id="web_mvc_jsp_score_category"><h2>Score</h2><ul><li id="web_mvc_jsp_score_menu_item"><a href="/icfp10/score/teamAll;jsessionid=F73187A8D69201C537DFB61EF3667021">Highscore</a></li></ul></li><li id="instance"><h2>Tools</h2><ul><li id="web_mvc_jsp_score_instance_menu_item"><a href="/icfp10/score/instanceTeamCount;jsessionid=F73187A8D69201C537DFB61EF3667021">Submit fuel</a></li><li id="web_mvc_jsp_create_instance_menu_item"><a href="/icfp10/instance/form;jsessionid=F73187A8D69201C537DFB61EF3667021">Submit a new car</a></li></ul></li></ul></div><div id="main"><div version="2.0">
+    You have submitted fuel for car 94135 with size 140. A special comment for you:
+<pre>
+circuit output starts with
+    11021210112101221
+this is a legal prefix
+you have produced fuel
+for 6 tanks
+using 1 ingredients of air
+checking reaction chamber 0
+checking reaction chamber 1
+checking reaction chamber 2
+checking reaction chamber 3
+checking reaction chamber 4
+checking reaction chamber 5
+checking reaction chamber 6
+checking reaction chamber 7
+checking reaction chamber 8
+checking reaction chamber 9
+checking reaction chamber 10
+checking reaction chamber 11
+checking reaction chamber 12
+checking reaction chamber 13
+checking reaction chamber 14
+checking reaction chamber 15
+checking reaction chamber 16
+checking reaction chamber 17
+checking reaction chamber 18
+checking reaction chamber 19
+checking reaction chamber 20
+checking reaction chamber 21
+checking reaction chamber 22
+checking reaction chamber 23
+checking reaction chamber 24
+checking reaction chamber 25
+checking reaction chamber 26
+checking reaction chamber 27
+checking reaction chamber 28
+checking reaction chamber 29
+checking reaction chamber 30
+checking reaction chamber 31
+checking reaction chamber 32
+checking reaction chamber 33
+checking reaction chamber 34
+checking reaction chamber 35
+checking reaction chamber 36
+checking reaction chamber 37
+checking reaction chamber 38
+checking reaction chamber 39
+checking reaction chamber 40
+Good! The car can use this fuel.
+</pre></div><div id="footer"><span><a href="/icfp10/;jsessionid=F73187A8D69201C537DFB61EF3667021">Home</a></span> | <span><a href="/icfp10/static/j_spring_security_logout;jsessionid=F73187A8D69201C537DFB61EF3667021">Logout</a></span></div></div></div></body></html>
