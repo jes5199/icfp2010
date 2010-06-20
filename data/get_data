@@ -1,0 +1,6 @@
+#!/bin/bash
+
+while read car; do
+  echo "Getting car $car..."
+  [ -f "cars/$car" ] || curl -s -u vorpal:817346361913013919142157626495100946450967820619337166341550 "http://icfpcontest.org/icfp10/instance/$car/solve/form" | ruby -e 'puts STDIN.read.scan(%r%22[012]\d+%)' > "cars/$car" && echo "Success!" || echo "Failure!"
+done <all_cars.txt
