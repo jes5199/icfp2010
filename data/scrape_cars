@@ -32,7 +32,7 @@ def write_cars(id)
   return cars.last.first
 end
 
-id = 0
+id = Dir.glob(File.join(File.dirname(__FILE__), 'cars', '*')).map{|x| x =~ /([0-9]+)/ ; $1.to_i}.sort.last + 1
 while id
   id = write_cars(id)
 end
