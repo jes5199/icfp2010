@@ -41,6 +41,11 @@ intSchemeTwo s = x + tri
           x   = (3^len - 1) `div` 2
           tri = asTrinary s
 
+compileSchemeTwo :: Integer -> String
+compileSchemeTwo x = inBase3 len $ x - offset
+    where len = intLogBase3 $ 2*x + 1
+          offset = (3^len - 1) `div` 2
+
 parseTritArray :: String -> (String, String)
 parseTritArray ds = genericSplitAt len rest
     where (len, rest) = parseSingleTritCode ds
@@ -57,6 +62,7 @@ parseTritList func ds = subparse len rest
             where (next_val, next_rest)   = subparse (n-1) func_rest
                   (func_val, func_rest) = func sub_rest
 
+parseFuel :: String -> (Fuel, String)
 parseFuel = parseTritList $ parseTritList $ parseTritList $ parseIntSchemeTwo
 
 parseCar = parseTritList $ parseCylinder
@@ -84,3 +90,15 @@ prettyCar car = concat [ "Chamber " ++ show i ++ " (" ++ show flag ++ ")" ++ "\n
 --  24 0000 +24
 
 howManyTwos = length . takeWhile (\x -> x == '2')
+
+type Fuel = [[[Integer]]]
+
+compileList :: (a -> String) -> [a] -> String
+compileList subCompiler xs = tritEncode (genericLength xs) ++ concatMap subCompiler xs
+
+renderSchemeTwo :: Integer -> String
+renderSchemeTwo n = tritEncode (genericLength s) ++ s
+    where s = compileSchemeTwo n
+
+compileFuel :: Fuel -> String
+compileFuel = compileList $ compileList $ compileList $ renderSchemeTwo
