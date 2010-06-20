@@ -2,6 +2,7 @@ module NumberParser where
 import Numeric
 import Data.Char
 import List
+import CarParts
 
 tritEncode :: Integer -> String
 tritEncode 0 = "0"
@@ -71,8 +72,6 @@ parseCar = parseTritList $ parseCylinder
                  (main_flag,rest2)  = parseIntSchemeTwo rest1
                  (lower_pipe,rest3) = parseTritList parseIntSchemeTwo rest2
 
-type Car = [([Integer], Integer, [Integer])]
-
 prettyCar :: Car -> String
 prettyCar car = concat [ "Chamber " ++ show i ++ " (" ++ show flag ++ ")" ++ "\n  upper pipe: " ++ show upper ++ "\n  lower pipe: " ++ show lower ++ "\n" | ((upper,flag,lower), i) <- zip car [0..] ]
 
@@ -110,8 +109,6 @@ showFuelAsMatrices fuel = concat [[name] ++ ":\n" ++ showMatrix value | (name, v
 --  24 0000 +24
 
 howManyTwos = length . takeWhile (\x -> x == '2')
-
-type Fuel = [[[Integer]]]
 
 compileList :: (a -> String) -> [a] -> String
 compileList subCompiler xs = tritEncode (genericLength xs) ++ concatMap subCompiler xs
