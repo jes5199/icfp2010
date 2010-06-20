@@ -25,7 +25,7 @@ parseSingleTritCode ('1':r) = (1, r)
 parseSingleTritCode ('2':'2':r) = (fromInteger ((3^num_digits - 1) `div` 2 + 2 + asTrinary digits), r3)
     where (num_digits, r2) = parseSingleTritCode r
           (digits, r3) = genericSplitAt num_digits r2
-parseSingleTritCode ('2':_) = error "Invalid number"
+parseSingleTritCode xs = error ("Invalid number " ++ show xs)
 
 asTrinary :: String -> Integer
 asTrinary = asTrinary' 0
