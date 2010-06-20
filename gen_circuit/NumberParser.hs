@@ -1,64 +1,34 @@
 module NumberParser where
 import Numeric
 import Data.Char
+import List
 
-tritEncode :: Int -> String
+tritEncode :: Integer -> String
 tritEncode 0 = "0"
 tritEncode 1 = "1"
-tritEncode 2 = "220"
-tritEncode i = encoded
-    where len = 1 + (floor $ logBase 3 (fromInteger $ toInteger $ i+3))
-          base = 3 ^ len
-          mod = i + 3 - base`div`3
-          j = base + mod
-          based = inBase3 j
-          encoded = (replicate ((len-1) * 2) '2') ++ (drop 1 based)
+tritEncode n = "22" ++ tritEncode num_digits ++ inBase3 num_digits (n - ((3^num_digits - 1) `div` 2 + 2))
+    where num_digits = intLogBase3 $ fromInteger $ toInteger $ 2*(n-2) + 1
 
-inBase3 = showIntAtBase 3 intToDigit `flip` ""
+intLogBase3 n | n < 3 = 0
+              | otherwise = 1 + intLogBase3 (n `div` 3)
+
+inBase3 :: Integer -> Integer -> String
+inBase3 0 n = ""
+inBase3 digits n = inBase3 (digits-1) (n `div` 3) ++ [intToDigit (fromInteger $ n `mod` 3)]
 
 
-parseSingleTritCode :: String -> (Int, String)
-parseSingleTritCode [] = (-3, [])
-parseSingleTritCode ('0':xs)         = (0,xs)
-parseSingleTritCode ('1':xs)         = (1,xs)
-parseSingleTritCode ('2':'0':xs)     = (-1,xs)
-parseSingleTritCode ('2':'1':xs)     = (-2,xs)
-parseSingleTritCode ('2':'2':'0':xs) = (2,xs)
-parseSingleTritCode s@('2':'2':xs)   = (parsed,rest)
-    where size    = (twos `div` 2) + 1
-          parsed  = parsePart digits
-          digits  = take size after2s
-          rest    = drop size after2s
-          after2s = drop twos s
-          twos    = howManyTwos s
-parseSingleTritCode rest = error $ show rest
+parseSingleTritCode :: String -> (Integer, String)
+parseSingleTritCode ('0':r) = (0, r)
+parseSingleTritCode ('1':r) = (1, r)
+parseSingleTritCode ('2':'2':r) = (fromInteger ((3^num_digits - 1) `div` 2 + 2 + asTrinary digits), r3)
+    where (num_digits, r2) = parseSingleTritCode r
+          (digits, r3) = genericSplitAt num_digits r2
 
-parseTritsNaive :: String -> [Int]
-parseTritsNaive [] = []
-parseTritsNaive ('0':xs)         = 0:parseTritsNaive xs
-parseTritsNaive ('1':xs)         = 1:parseTritsNaive xs
-parseTritsNaive ('2':'0':xs)     = -1:parseTritsNaive xs
-parseTritsNaive ('2':'1':xs)     = -2:parseTritsNaive xs
-parseTritsNaive ('2':'2':'0':xs) = 2:parseTritsNaive xs
-parseTritsNaive s@('2':'2':xs)   = parsed : parseTritsNaive rest
-    where size    = (twos `div` 2) + 1
-          parsed  = parsePart digits
-          digits  = take size after2s
-          rest    = drop size after2s
-          after2s = drop twos s
-          twos    = howManyTwos s
-    
-parseTritsNaive rest = error $ show rest
-
-parsePart :: String -> Int
-parsePart digits = (asTrinary 0 digits) + (offsetByLength len)
-   where len = length digits 
-
-offsetByLength n = 3^(n-1) - 3
-         
-asTrinary acc []     = acc
-asTrinary acc [d]    = acc + (num d)
-asTrinary acc (d:ds) = asTrinary ( (acc+(num d)) *3) ds 
+asTrinary :: String -> Integer
+asTrinary = asTrinary' 0
+    where asTrinary' acc []     = acc
+          asTrinary' acc [d]    = acc + (num d)
+          asTrinary' acc (d:ds) = asTrinary' ( (acc+(num d)) *3) ds 
 
 num '0' = 0
 num '1' = 1
@@ -68,10 +38,10 @@ intSchemeTwo :: String -> Integer
 intSchemeTwo s = x + tri
     where len = length s
           x   = (3^len - 1) `div` 2
-          tri = asTrinary 0 s
+          tri = asTrinary s
 
 parseTritArray :: String -> (String, String)
-parseTritArray ds = splitAt len rest
+parseTritArray ds = genericSplitAt len rest
     where (len, rest) = parseSingleTritCode ds
 
 parseIntSchemeTwo :: String -> (Integer, String)
