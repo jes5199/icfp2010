@@ -2,6 +2,7 @@ module FuelChecker where
 
 import List
 import CarParts
+import Matrices
 
 -- Check fuel either succeeds (returning ()) or errors (giving a
 -- descriptive message) depending on whether the car and fuel match.
@@ -54,3 +55,19 @@ check_chamber chamber_num (upper, flag, lower) fuel
 check :: Monad m => Bool -> String -> m ()
 check True _ = return ()
 check False s = fail s
+
+show_chamber_results :: ReactionChamber -> Fuel -> String
+show_chamber_results (upper, flag, lower) fuel
+    = unlines $
+      [lhs ++ " " ++ comparator ++ " " ++ rhs ++ "  (diff: " ++ diff ++ ")"
+       | (lhs, comparator, rhs, diff)
+           <- zip4 (showMatrixLines upper_matrix) (makeComparator flag) (showMatrixLines lower_matrix)
+              (showMatrixLines diff_matrix)]
+    where upper_matrix = eval_pipe upper fuel
+          lower_matrix = eval_pipe lower fuel
+          diff_matrix = zipWith (zipWith (-)) upper_matrix lower_matrix
+          makeComparator 0 = "> " : makeComparator 1
+          makeComparator _ = repeat ">="
+
+manual_test_chamber :: Car -> Int -> Fuel -> IO ()
+manual_test_chamber car chamber_num fuel = putStr $ show_chamber_results (car !! chamber_num) fuel

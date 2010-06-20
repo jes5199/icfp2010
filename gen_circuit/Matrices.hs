@@ -2,8 +2,8 @@ module Matrices where
 
 import List
 
-showMatrix :: [[Integer]] -> String
-showMatrix m = unlines $ map (layoutRow $ measureColumns sm) sm
+showMatrixLines :: [[Integer]] -> [String]
+showMatrixLines m = map (layoutRow $ measureColumns sm) sm
     where sm = stringizeMatrix m
           stringizeMatrix :: [[Integer]] -> [[String]]
           stringizeMatrix = map (map show)
@@ -13,3 +13,6 @@ showMatrix m = unlines $ map (layoutRow $ measureColumns sm) sm
           layoutRow widths row = "[" ++ (concat $ intersperse " " $ zipWith justify widths row) ++ "]"
           justify :: Int -> String -> String
           justify n s = replicate (n - length s) ' ' ++ s
+
+showMatrix :: [[Integer]] -> String
+showMatrix = unlines . showMatrixLines
