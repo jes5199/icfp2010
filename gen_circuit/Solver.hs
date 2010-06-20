@@ -1,3 +1,5 @@
+module Solver where
+
 -- Heuristic algorithms for solving cars.
 
 import List
