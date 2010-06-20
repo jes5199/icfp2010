@@ -6,3 +6,5 @@ TestAll
 ParseCars
 SolveCars
 SolveCar
+TestSimulator
+GenCircuit
