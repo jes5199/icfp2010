@@ -20,15 +20,20 @@ dumb_heuristic _ = return [[[2]]]
 all_heuristics :: Monad m => [Heuristic m]
 all_heuristics = [dumb_heuristic]
 
--- Toplevel "solve" tries all heuristics in order and returns the
--- result that serializes to the shortest sequence.
-solve :: Monad m => Heuristic m
-solve car = case sortBy compareLength successful_fuels
-            of [] -> fail "All heuristics failed"
-               ((f,_):_) -> return f
+-- Run a list of heuristics and return the result that serializes to
+-- the shortest sequence.
+find_shortest :: (Monad m) => [Heuristic []] -> String -> Heuristic m
+find_shortest heuristics fail_msg car = case sortBy compareLength successful_fuels
+                                        of [] -> fail fail_msg
+                                           ((f,_):_) -> return f
     where successful_fuels :: [(Fuel, Int)]
-          successful_fuels = do heuristic <- all_heuristics
+          successful_fuels = do heuristic <- heuristics
                                 fuel <- heuristic car
                                 check_fuel car fuel
                                 return (fuel, length $ compileFuel fuel)
           compareLength (_,x) (_,y) = compare x y
+
+-- Toplevel "solve" tries all heuristics in order and returns the
+-- result that serializes to the shortest sequence.
+solve :: Monad m => Heuristic m
+solve = find_shortest all_heuristics "All heuristics failed"
