@@ -37,14 +37,15 @@ eval_pipe pipe fuel = foldr multiply_matrices (identity_matrix $ num_ingredients
 -- components on the top row.
 check_chamber :: Monad m => Int -> ReactionChamber -> Fuel -> m ()
 check_chamber chamber_num (upper, flag, lower) fuel
-    = sequence_ [sequence_ [check (diff >= threshold) (msg i j diff threshold)
-                            | (j, diff) <- zip [1..] diff_row]
-                 | (i, diff_row, threshold) <- zip3 [1..] matrix_difference thresholds]
+    = do sequence_ [sequence_ [check (diff >= 0) (msg i j diff 0)
+                               | (j, diff) <- zip [1..] diff_row]
+                    | (i, diff_row) <- zip [1..] matrix_difference]
+         if flag == 0 then check (top_left_corner_difference >= 1) (msg 0 0 top_left_corner_difference 1)
+                      else return ()
     where upper_matrix = eval_pipe upper fuel
           lower_matrix = eval_pipe lower fuel
+          top_left_corner_difference = matrix_difference !! 0 !! 0
           matrix_difference = zipWith (zipWith (-)) upper_matrix lower_matrix
-          thresholds | flag == 0 = 1 : replicate (n-1) 0
-                     | otherwise = replicate n 0
           n = num_ingredients fuel
           msg i j diff threshold = "in chamber " ++ show chamber_num ++ ", upper_" ++ show i ++ "_" ++ show j ++
                                    " - lower_" ++ show i ++ "_" ++ show j ++ " = " ++ show diff ++ ", must be >= " ++
