@@ -25,16 +25,26 @@ simple_1x1_heuristic :: Monad m => Heuristic m
 simple_1x1_heuristic car = find_shortest [\_ -> return (make_fuel values) | values <- cartesian_product n [1,2]]
                            "No simple 1x1 fuels work" car
     where n = num_required_tanks car
-          cartesian_product :: Integer -> [Integer] -> [[Integer]]
-          cartesian_product 0 _ = [[]]
-          cartesian_product i xs = do x <- xs
-                                      ys <- cartesian_product (i-1) xs
-                                      return (x : ys)
           make_fuel :: [Integer] -> Fuel
           make_fuel values = [[[x]] | x <- values]
 
+cartesian_product :: Integer -> [a] -> [[a]]
+cartesian_product 0 _ = [[]]
+cartesian_product i xs = do x <- xs
+                            ys <- cartesian_product (i-1) xs
+                            return (x : ys)
+
+-- Heuristic that tries all combinations of the matrices
+-- [1 0] [1 1]
+-- [1 1] [0 1]
+simple_2x2_heuristic :: Monad m => Heuristic m
+simple_2x2_heuristic car = find_shortest [(\_ -> return matrices) | matrices <- cartesian_product n choices]
+                           "No simple 2x2 fuels work" car
+    where n = num_required_tanks car
+          choices = [[[1,0],[1,1]],[[1,1],[0,1]],[[2,1],[1,1]]]
+
 all_heuristics :: Monad m => [Heuristic m]
-all_heuristics = [dumb_heuristic, simple_1x1_heuristic]
+all_heuristics = [dumb_heuristic, simple_1x1_heuristic, simple_2x2_heuristic]
 
 -- Run a list of heuristics and return the result that serializes to
 -- the shortest sequence.
