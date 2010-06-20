@@ -7,4 +7,4 @@ while true ; do
     time ./bin/solve_all_cars
     git add ./data
     git commit -m 'data'
-done | tee -a log/loop.log
+done | tee -a log/loop3.log
