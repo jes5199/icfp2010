@@ -10,11 +10,9 @@ check_fuel car fuel = do check_enough_tanks car fuel
                          sequence_ [check_chamber i chamber fuel | (chamber, i) <- zip car [0..]]
 
 check_enough_tanks :: Monad m => Car -> Fuel -> m ()
-check_enough_tanks car fuel = check (num_required_tanks <= genericLength fuel) msg
-    where num_required_tanks = max0 [max (max0plus1 upper) (max0plus1 lower) | (upper, flag, lower) <- car]
-          msg = "Car requires " ++ show num_required_tanks ++ " tanks, but only " ++ show (length fuel) ++ " present"
-          max0 xs = maximum (0:xs)
-          max0plus1 = max0 . map (1+)
+check_enough_tanks car fuel = check (n <= genericLength fuel) msg
+    where n = num_required_tanks car
+          msg = "Car requires " ++ show n ++ " tanks, but only " ++ show (length fuel) ++ " present"
 
 multiply_matrices :: [[Integer]] -> [[Integer]] -> [[Integer]]
 multiply_matrices a b = [rowTimesTransposedMatrix r b' | r <- a]
