@@ -3,6 +3,8 @@
 dir=`dirname $0`/../
 data=$dir/data/solutions/
 
+mkdir -p "$dir/data/submitted/"
+
 for SOLUTION in $data* ; do
     CAR_ID=`basename $SOLUTION`
 
