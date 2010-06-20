@@ -2,6 +2,7 @@ import Simulator
 import GenCircuit
 import CarParts
 import Solver
+import FuelChecker
 
 import Test.HUnit
 
@@ -30,9 +31,10 @@ car_solve_tests = "car_solve_tests" ~: test
                    test_car_solve [([0],0,[1]),([2],1,[0]),([1,0],1,[2]),([2,0],1,[0,1,2])] (Just [[[2]],[[1]],[[2]]])
                   ]
 
+test_fuel_checker = "fuel checker" ~: check_fuel [([0,0],0,[0])] [[[2,0],[0,0]]] ~?= Just ()
 
 tests = test [ test_identity_string, test_const_n 0 const_0, test_const_n 1 const_1, test_const_n 2 const_2,
-               test_identity, test_emitter, car_solve_tests ]
+               test_identity, test_emitter, car_solve_tests, test_fuel_checker ]
 
 main = do
   putStrLn "=========="
