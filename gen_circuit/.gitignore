@@ -2,7 +2,7 @@
 *.o
 CreateSubmission
 Main
-TestSimulator
+TestAll
 ParseCars
 SolveCars
 SolveCar
