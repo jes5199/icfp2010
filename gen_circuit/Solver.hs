@@ -17,8 +17,22 @@ type Heuristic m = Car -> m Fuel
 dumb_heuristic :: Monad m => Heuristic m
 dumb_heuristic _ = return [[[2]]]
 
+-- Heuristic that tries all fuels that are 1x1 matrices containing
+-- values equal to 1 or 2.
+simple_1x1_heuristic :: Monad m => Heuristic m
+simple_1x1_heuristic car = find_shortest [\_ -> return (make_fuel values) | values <- cartesian_product n [1,2]]
+                           "No simple 1x1 fuels work" car
+    where n = num_required_tanks car
+          cartesian_product :: Integer -> [Integer] -> [[Integer]]
+          cartesian_product 0 _ = [[]]
+          cartesian_product i xs = do x <- xs
+                                      ys <- cartesian_product (i-1) xs
+                                      return (x : ys)
+          make_fuel :: [Integer] -> Fuel
+          make_fuel values = [[[x]] | x <- values]
+
 all_heuristics :: Monad m => [Heuristic m]
-all_heuristics = [dumb_heuristic]
+all_heuristics = [dumb_heuristic, simple_1x1_heuristic]
 
 -- Run a list of heuristics and return the result that serializes to
 -- the shortest sequence.
