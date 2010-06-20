@@ -8,4 +8,4 @@ while true ; do
     ./bin/submit_solutions
     git add ./data
     git commit -m 'data'
-done
+done | tee log/loop.log
