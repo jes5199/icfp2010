@@ -1,11 +1,10 @@
 #!/bin/bash
 
-while true do
+while true ; do
     git pull
     make
     ./data/scrape_cars
-    time ./bin/solve_all_cars
-    ./bin/submit_solutions
+    time ./bin/solve_unsolved_cars
     git add ./data
     git commit -m 'data'
-done
+done | tee -a log/loop.log
