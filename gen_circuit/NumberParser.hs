@@ -76,6 +76,13 @@ type Car = [([Integer], Integer, [Integer])]
 prettyCar :: Car -> String
 prettyCar car = concat [ "Chamber " ++ show i ++ " (" ++ show flag ++ ")" ++ "\n  upper pipe: " ++ show upper ++ "\n  lower pipe: " ++ show lower ++ "\n" | ((upper,flag,lower), i) <- zip car [0..] ]
 
+showCarAsEquations :: Car -> String
+showCarAsEquations = concat . intersperse "\n" . map chamberToEquation
+    where chamberToEquation (upper, flag, lower) = showPipe upper ++ "x " ++ (if flag == 0 then ">" else ">=") ++
+                                                   " " ++ showPipe lower ++ "x"
+          showPipe = map showFuel
+          showFuel = toEnum . (fromEnum 'A' +) . fromInteger
+
 --  3 10   +0
 --  4 11 
 --  5 12
