@@ -5,6 +5,7 @@ import CarParts
 import FuelChecker
 import NumberParser
 import Solver
+import List
 
 randomList :: Int -> (StdGen -> (a, StdGen)) -> StdGen -> ([a], StdGen)
 randomList 0   func gen = ([], gen)
@@ -52,8 +53,14 @@ carFactory :: Int -> Int -> Int -> StdGen -> ((Car, Fuel), StdGen)
 carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel [] [] gen'
     where (fuel, gen') = randomFuel ingredientCount gen
 
---normalizeCar :: Car -> String
---normalizeCar = 
+normalizeCar :: Car -> String
+normalizeCar car = minimum $ map carAsTrits allCars
+    where allCars = map (flip permuteCar car) allPermutations 
+
+carAsTrits :: Car -> String
+carAsTrits car = (tritEncode $ toInteger $ length car) ++ (concat $ sort (map sectionAsTrit car))
+
+sectionAsTrit (upper,flag,lower) = (compileList renderSchemeTwo upper) ++ (renderSchemeTwo flag) ++ (compileList renderSchemeTwo lower)
 
 type Permutation = [Int]
 
@@ -82,5 +89,5 @@ main = do gen <- getStdGen
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
           check_fuel car fuel
-          print $ allPermutations
-          --print $ (solve car :: Maybe Fuel)
+          print $ normalizeCar car
+          print $ (solve car :: Maybe Fuel)
