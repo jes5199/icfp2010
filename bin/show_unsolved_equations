@@ -1,0 +1,2 @@
+#!/bin/bash
+./bin/unsolved_cars | ./bin/show_cars_equation 
