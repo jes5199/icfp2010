@@ -5,10 +5,7 @@ import Circuitry
 import Simulator
 import GenCircuit
 
-main = interact compileFuel
-
-compileFuel :: String -> String
-compileFuel = (++"\n") . showCircuit . construct1to1Circuit . emitter . (proper_prefix++) . parseInput
+main = interact ((++"\n") . compileCircuit . parseInput)
 
 parseInput :: String -> [Trit]
 parseInput = concatMap parseChar
