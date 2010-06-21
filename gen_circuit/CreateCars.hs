@@ -56,11 +56,15 @@ carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel
     where (fuel, gen') = randomFuel ingredientCount gen
 
 main = do gen <- getStdGen 
-          let ((car, fuel), gen') = carFactory 50 8 4 gen
+          let ((car, fuel), gen') = carFactory 100 8 4 gen
           putStrLn $ showCarAsEquations $ car
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
           check_fuel car fuel
-          print $ normalizeCar car
-          putStrLn $ compileCircuit $ (map digitToInt) $ compileFuel fuel
+          let (car_string, permutation) = normalizeCar car
+          print $ car_string
+          print $ length car_string
+          let fuel_string = compileFuel (permuteFuel permutation fuel)
+          print $ fuel_string
+          putStrLn $ compileCircuit $ (map digitToInt) $ fuel_string
           print $ (solve car :: Maybe Fuel)

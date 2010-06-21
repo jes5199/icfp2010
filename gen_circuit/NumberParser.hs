@@ -4,6 +4,7 @@ import Data.Char
 import List
 import CarParts
 import Matrices
+import Maybe
 
 tritEncode :: Integer -> String
 tritEncode 0 = "0"
@@ -112,9 +113,9 @@ compileFuel :: Fuel -> String
 compileFuel = compileList $ compileList $ compileList $ renderSchemeTwo
 
 
-normalizeCar :: Car -> String
-normalizeCar car = minimum $ map carAsTrits allCars
-    where allCars = map (flip permuteCar car) (allPermutations $ fromInteger $ num_required_tanks car)
+normalizeCar :: Car -> (String, Permutation)
+normalizeCar car = minimum $ allCars
+    where allCars = map (\p -> ( carAsTrits $ permuteCar p car , p) ) (allPermutations $ fromInteger $ num_required_tanks car)
 
 carAsTrits :: Car -> String
 carAsTrits car = (tritEncode $ toInteger $ length car) ++ (concat $ sort (map sectionAsTrit car))
@@ -141,4 +142,10 @@ permuteCar :: Permutation -> Car -> Car
 permuteCar perm car = map permuteReactionChamber car
     where permuteReactionChamber (upper, flag, lower) = (map permuteSection upper, flag, map permuteSection lower)
           permuteSection n = toInteger $ perm !! fromInteger n
+
+permuteFuel :: Permutation -> Fuel -> Fuel
+permuteFuel perm fuel = map permuteTank [0..(length fuel - 1)]
+    where permuteTank n = fuel!!(fromJust $ elemIndex n perm)
+
+
 
