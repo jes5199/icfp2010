@@ -1,0 +1,9 @@
+#!/bin/bash
+dir=`dirname $0`/../
+data=$dir/data/cars/
+
+while read CAR_ID ; do
+    echo $CAR_ID
+    ./bin/ShowCarAsEquation < $data$CAR_ID
+    echo
+done
