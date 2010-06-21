@@ -5,6 +5,7 @@ import CarParts
 import FuelChecker
 import NumberParser
 import Solver
+import List
 
 randomList :: Int -> (StdGen -> (a, StdGen)) -> StdGen -> ([a], StdGen)
 randomList 0   func gen = ([], gen)
@@ -52,10 +53,31 @@ carFactory :: Int -> Int -> Int -> StdGen -> ((Car, Fuel), StdGen)
 carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel [] [] gen'
     where (fuel, gen') = randomFuel ingredientCount gen
 
---normalizeCar :: Car -> String
---normalizeCar =
+normalizeCar :: Car -> String
+normalizeCar car = minimum $ map carAsTrits allCars
+    where allCars = map (flip permuteCar car) allPermutations 
+
+carAsTrits :: Car -> String
+carAsTrits car = (tritEncode $ toInteger $ length car) ++ (concat $ sort (map sectionAsTrit car))
+
+sectionAsTrit (upper,flag,lower) = (compileList renderSchemeTwo upper) ++ (renderSchemeTwo flag) ++ (compileList renderSchemeTwo lower)
 
 type Permutation = [Int]
+
+permute :: [a] -> [[a]]
+permute str = rotate str len len
+   where len = length str
+
+rotate :: [a] -> Int -> Int -> [[a]]
+rotate _ _ 0 = []
+rotate s 1 _ = [s]
+rotate (ch:chs) len rcnt = 
+   map (\x -> ch : x) (rotate chs (len-1) (len-1))
+   ++ 
+   rotate (chs ++ [ch]) len (rcnt-1)
+
+allPermutations = permute [0,1,2,3,4,5]
+
 permuteCar :: Permutation -> Car -> Car
 permuteCar perm car = map permuteReactionChamber car
     where permuteReactionChamber (upper, flag, lower) = (map permuteSection upper, flag, map permuteSection lower)
@@ -67,4 +89,5 @@ main = do gen <- getStdGen
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
           check_fuel car fuel
+          print $ normalizeCar car
           print $ (solve car :: Maybe Fuel)
