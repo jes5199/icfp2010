@@ -61,10 +61,10 @@ main = do gen <- getStdGen
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
           check_fuel car fuel
-          let car_string = normalizeCar car
+          let (car_string, permutation) = normalizeCar car
           print $ car_string
           print $ length car_string
-          let fuel_string = compileFuel fuel
+          let fuel_string = compileFuel (permuteFuel permutation fuel)
           print $ fuel_string
-          putStrLn $ compileCircuit $ (map digitToInt) $ string
+          putStrLn $ compileCircuit $ (map digitToInt) $ fuel_string
           print $ (solve car :: Maybe Fuel)
