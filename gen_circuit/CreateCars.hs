@@ -25,18 +25,18 @@ randomFuel ingredientCount gen = randomList 6 (randomFuelComponent ingredientCou
 randomPipe :: Int -> StdGen -> (Pipe, StdGen)
 randomPipe len = randomList len $ randomR (0,5)
 
-carFactory :: Int -> Int -> Fuel -> [(Pipe,[[Integer]])] -> [ReactionChamber] -> StdGen -> ((Car, Fuel), StdGen)
-carFactory 0 pipeLen fuel evaluated_pipes chambers gen = ((chambers, fuel), gen)
-carFactory counter pipeLen fuel evaluated_pipes chambers gen = carFactory (counter-1) pipeLen fuel evaluted_pipes' final_chambers gen'
+chamberFactory :: Int -> Int -> Fuel -> [(Pipe,[[Integer]])] -> [ReactionChamber] -> StdGen -> ((Car, Fuel), StdGen)
+chamberFactory 0 pipeLen fuel evaluated_pipes chambers gen = ((chambers, fuel), gen)
+chamberFactory counter pipeLen fuel evaluated_pipes chambers gen = chamberFactory (counter-1) pipeLen fuel evaluated_pipes' final_chambers gen'
     where (pipe,gen')     = randomPipe pipeLen gen
           matrix          = eval_pipe pipe fuel
           new_chambers1   = concatMap (     makeValidReactionChambers (pipe,matrix) ) evaluated_pipes
           new_chambers2   = concatMap (flip makeValidReactionChambers (pipe,matrix) ) evaluated_pipes
-          final_chambers  = new_chambrers1 ++ new_chambers2 ++ chambers
+          final_chambers  = new_chambers1 ++ new_chambers2 ++ chambers
           evaluated_pipes'= (pipe,matrix):evaluated_pipes
 
 matrixLessThanOrEqual :: [[Integer]] -> [[Integer]] -> Bool
-matrixLessThanOrEqual m1 m2 = all [ all [ a <= b | (a,b) <- zip row1 row2 ] | (row1,row2) <- zip m1 m2 ]
+matrixLessThanOrEqual m1 m2 = all (\(a,b) -> a<=b ) $ zip (concat m1) (concat m2)
 
 makeValidReactionChambers :: (Pipe, [[Integer]]) -> (Pipe, [[Integer]]) -> [ReactionChamber]
 makeValidReactionChambers (p1, m1) (p2, m2) | not $ matrixLessThanOrEqual m1 m2 = []
@@ -45,5 +45,9 @@ makeValidReactionChambers (p1, m1) (p2, m2) | not $ matrixLessThanOrEqual m1 m2 
                                                              then 0
                                                              else 1
 
+carFactory :: Int -> Int -> Int -> StdGen -> ((Car, Fuel), StdGen)
+carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel [] [] gen'
+    where (fuel, gen') = randomFuel ingredientCount gen
+
 main = do gen <- getStdGen 
-          print $ randomPipe 10 gen
+          print $ carFactory 10 5 2 gen
