@@ -2,14 +2,17 @@ import Random
 import Control.Monad
 import System.IO.Unsafe
 
-getRandomValue :: Random a => IO a
-getRandomValue = do gen <- newStdGen
-                    return (fst $ random gen)
+randomElement :: StdGen -> (Integer, StdGen)
+randomElement gen = randomR (0,1) gen
 
-matrixOf :: Int -> [Integer] -> [[Integer]]
-matrixOf size input = take size slices
-    where slices = slice (1:input)
-          slice list = (take size list):(slice (drop size list))
+randomList :: Int -> (StdGen -> (a, StdGen)) -> StdGen -> ([a], StdGen)
+randomList 0   func gen = ([], gen)
+randomList len func gen = (elm:rest, gen'')
+    where (elm, gen')   = func gen
+          (rest, gen'') = randomList (len-1) func gen'
 
-main = do val <- sequence [(getRandomValue :: IO Integer) | i <- [1..10]]
-          print $ matrixOf 3 val
+randomMatrix :: Int -> StdGen -> ([[Integer]], StdGen)
+randomMatrix size gen = randomList size (randomList size randomElement) gen
+
+main = do gen <- getStdGen 
+          print $ randomMatrix 3 gen
