@@ -4,6 +4,8 @@ import Maybe
 import List
 import Circuitry
 import Test.HUnit
+import Simulator
+import CarParts
 
 -- A wire is represented by the address of its origin and the address
 -- of its destination.
@@ -201,3 +203,7 @@ bi_to_single = select_outputs [0] $ select_inputs [1, 0] $ gate `chain` gate
 bi_emitter :: [Int] -> SubCircuit
 bi_emitter xs = select_inputs [0] $ foldl1 (flip chain_delay) (map bi_plus plan) `chain` bi_to_single
     where plan = emitterPlanner (map (\n -> (n+2) `mod` 3) xs)
+
+compileCircuit :: [Int] -> String
+compileCircuit = showCircuit . construct1to1Circuit . emitter . (proper_prefix++)
+
