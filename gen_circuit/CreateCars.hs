@@ -8,6 +8,8 @@ import Solver
 import List
 import Char
 import GenCircuit
+import System
+import Maybe
 
 randomList :: Int -> (StdGen -> (a, StdGen)) -> StdGen -> ([a], StdGen)
 randomList 0   func gen = ([], gen)
@@ -31,9 +33,9 @@ randomPipe :: Int -> StdGen -> (Pipe, StdGen)
 randomPipe len = randomList len $ randomR (0,5)
 
 chamberFactory :: Int -> Int -> Fuel -> [(Pipe,[[Integer]])] -> [ReactionChamber] -> StdGen -> ((Car, Fuel), StdGen)
-chamberFactory 0 pipeLen fuel evaluated_pipes chambers gen = ((chambers, fuel), gen)
-chamberFactory counter pipeLen fuel evaluated_pipes chambers gen | elem (pipe, matrix) evaluated_pipes = chamberFactory (counter-1) pipeLen fuel evaluated_pipes chambers gen'
-                                                                 | otherwise = chamberFactory (counter-1) pipeLen fuel evaluated_pipes' final_chambers gen'
+chamberFactory counter pipeLen fuel evaluated_pipes chambers gen | counter <= length chambers = ((take counter chambers, fuel), gen)
+chamberFactory counter pipeLen fuel evaluated_pipes chambers gen | elem (pipe, matrix) evaluated_pipes = chamberFactory counter pipeLen fuel evaluated_pipes chambers gen'
+                                                                 | otherwise = chamberFactory counter pipeLen fuel evaluated_pipes' final_chambers gen'
     where (pipe,gen')     = randomPipe pipeLen gen
           matrix          = eval_pipe pipe fuel
           new_chambers1   = concatMap (     makeValidReactionChambers (pipe,matrix) ) evaluated_pipes
@@ -56,7 +58,7 @@ carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel
     where (fuel, gen') = randomFuel ingredientCount gen
 
 main = do gen <- getStdGen 
-          let ((car, fuel), gen') = carFactory 100 8 4 gen
+          let ((car, fuel), gen') = carFactory 370 8 4 gen
           putStrLn $ showCarAsEquations $ car
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
@@ -66,5 +68,11 @@ main = do gen <- getStdGen
           print $ length car_string
           let fuel_string = compileFuel (permuteFuel permutation fuel)
           print $ fuel_string
-          putStrLn $ compileCircuit $ (map digitToInt) $ fuel_string
-          print $ (solve car :: Maybe Fuel)
+          let circuit = compileCircuit $ (map digitToInt) $ fuel_string
+          putStrLn $ circuit
+          if isNothing $ solve car
+            then return ()
+            else fail "too easy"
+          args <- getArgs
+          writeFile ( (args !! 0) ++ ".fuel") circuit
+          writeFile ( (args !! 0) ++ ".car") car_string
