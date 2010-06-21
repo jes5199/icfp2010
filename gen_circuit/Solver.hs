@@ -21,6 +21,9 @@ type Heuristic m = Car -> m Fuel
 dumb_heuristic :: Monad m => Heuristic m
 dumb_heuristic _ = return [[[2]]]
 
+dumb_heuristic_2 :: Monad m => Heuristic m
+dumb_heuristic_2 _ = return [[[1,0,0],[0,0,1],[0,0,0]],[[1,1,0],[0,0,0],[1,0,0]]]
+
 -- Heuristic that tries all fuels that are 1x1 matrices containing
 -- values equal to 1 or 2.
 simple_1x1_heuristic :: Monad m => Heuristic m
@@ -113,7 +116,7 @@ findLargest :: Ord a => [a] -> (Int, a)
 findLargest xs = (\(x,y) -> (y,x)) $ maximum $ zip xs [0..]
 
 all_heuristics :: Monad m => [Heuristic m]
-all_heuristics = [dumb_heuristic, simple_1x1_heuristic, simple_2x2_heuristic, generalized_1x1_heuristic]
+all_heuristics = [dumb_heuristic, dumb_heuristic_2, simple_1x1_heuristic, simple_2x2_heuristic, generalized_1x1_heuristic]
 
 -- Run a list of heuristics and return the result that serializes to
 -- the shortest sequence.
