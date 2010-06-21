@@ -3,6 +3,8 @@ import Control.Monad
 import System.IO.Unsafe
 import CarParts
 import FuelChecker
+import NumberParser
+import Solver
 
 randomList :: Int -> (StdGen -> (a, StdGen)) -> StdGen -> ([a], StdGen)
 randomList 0   func gen = ([], gen)
@@ -50,4 +52,9 @@ carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel
     where (fuel, gen') = randomFuel ingredientCount gen
 
 main = do gen <- getStdGen 
-          print $ carFactory 10 5 2 gen
+          let ((car, fuel), gen') = carFactory 110 10 4 gen
+          putStrLn $ showCarAsEquations $ car
+          putStrLn $ showFuelAsMatrices $ fuel
+          print $ length car
+          check_fuel car fuel
+          print $ (solve car :: Maybe Fuel)
