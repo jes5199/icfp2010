@@ -56,7 +56,7 @@ carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel
     where (fuel, gen') = randomFuel ingredientCount gen
 
 main = do gen <- getStdGen 
-          let ((car, fuel), gen') = carFactory 11 10 4 gen
+          let ((car, fuel), gen') = carFactory 50 8 4 gen
           putStrLn $ showCarAsEquations $ car
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
