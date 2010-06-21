@@ -29,7 +29,8 @@ randomPipe len = randomList len $ randomR (0,5)
 
 chamberFactory :: Int -> Int -> Fuel -> [(Pipe,[[Integer]])] -> [ReactionChamber] -> StdGen -> ((Car, Fuel), StdGen)
 chamberFactory 0 pipeLen fuel evaluated_pipes chambers gen = ((chambers, fuel), gen)
-chamberFactory counter pipeLen fuel evaluated_pipes chambers gen = chamberFactory (counter-1) pipeLen fuel evaluated_pipes' final_chambers gen'
+chamberFactory counter pipeLen fuel evaluated_pipes chambers gen | elem (pipe, matrix) evaluated_pipes = chamberFactory (counter-1) pipeLen fuel evaluated_pipes chambers gen'
+                                                                 | otherwise = chamberFactory (counter-1) pipeLen fuel evaluated_pipes' final_chambers gen'
     where (pipe,gen')     = randomPipe pipeLen gen
           matrix          = eval_pipe pipe fuel
           new_chambers1   = concatMap (     makeValidReactionChambers (pipe,matrix) ) evaluated_pipes
