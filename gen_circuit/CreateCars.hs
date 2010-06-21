@@ -52,8 +52,17 @@ carFactory :: Int -> Int -> Int -> StdGen -> ((Car, Fuel), StdGen)
 carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel [] [] gen'
     where (fuel, gen') = randomFuel ingredientCount gen
 
+--normalizeCar :: Car -> String
+--normalizeCar =
+
+type Permutation = [Int]
+permuteCar :: Permutation -> Car -> Car
+permuteCar perm car = map permuteReactionChamber car
+    where permuteReactionChamber (upper, flag, lower) = (map permuteSection upper, flag, map permuteSection lower)
+          permuteSection n = toInteger $ perm !! fromInteger n
+
 main = do gen <- getStdGen 
-          let ((car, fuel), gen') = carFactory 110 10 4 gen
+          let ((car, fuel), gen') = carFactory 11 10 4 gen
           putStrLn $ showCarAsEquations $ car
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
