@@ -1,20 +1,11 @@
 import Data.IORef
 import Random
 
-type Foo = IORef StdGen
-
-getRandomValue :: Random a => Foo -> IO a
-getRandomValue foo = do gen <- readIORef foo
-                        let (value, gen') = random gen
-                        writeIORef foo gen'
-                        return value
-
-makeFoo :: IO Foo
-makeFoo = do gen <- newStdGen
-             newIORef gen
+getRandomValue :: Random a => IO a
+getRandomValue = do gen <- newStdGen
+                    return (fst $ random gen)
 
 
 
-main = do foo <- makeFoo
-          values <- sequence [(getRandomValue foo :: IO Int) | i <- [1..10]]
+main = do values <- sequence [(getRandomValue :: IO Int) | i <- [1..10]]
           print values
