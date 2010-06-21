@@ -6,6 +6,8 @@ import FuelChecker
 import NumberParser
 import Solver
 import List
+import Char
+import GenCircuit
 
 randomList :: Int -> (StdGen -> (a, StdGen)) -> StdGen -> ([a], StdGen)
 randomList 0   func gen = ([], gen)
@@ -60,4 +62,5 @@ main = do gen <- getStdGen
           print $ length car
           check_fuel car fuel
           print $ normalizeCar car
+          putStrLn $ compileCircuit $ (map digitToInt) $ compileFuel fuel
           print $ (solve car :: Maybe Fuel)
