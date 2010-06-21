@@ -7,4 +7,5 @@ while true ; do
     time ./bin/solve_new_cars
     git add ./data
     git commit -m 'data'
+    sleep 30
 done | tee -a log/loop.log
