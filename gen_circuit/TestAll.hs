@@ -2,6 +2,7 @@ import Simulator
 import GenCircuit
 import CarParts
 import Solver
+import NumberParser
 import FuelChecker
 
 import Test.HUnit
@@ -39,8 +40,12 @@ test_fuel_checker = "fuel checker" ~: test
                      check_fuel [([0,0],1,[0])] [[[0,0],[0,0]]] ~?= Just ()
                     ]
 
+real_cars = ["122110100100221010010", "222200010011022111111101002211120002211121210100221111111102212120000022121111101010221212121010100221211111100222200011111100002222000121210101010", "221110022010112200101022010022001110220110220121110220120"]
+test_normalize = "normalizer" ~: test
+                 (map (\x -> (normalizeCar $ fst $ parseCar x) ~?= x ) real_cars)
+
 tests = test [ test_identity_string, test_const_n 0 const_0, test_const_n 1 const_1, test_const_n 2 const_2,
-               test_identity, test_emitter, car_solve_tests, test_fuel_checker ]
+               test_identity, test_emitter, car_solve_tests, test_fuel_checker, test_normalize ]
 
 main = do
   putStrLn "=========="
