@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+numerify = lambda{|x| x =~ /([0-9]+)/ ; $1.to_i}
+
+path = File.join(File.dirname(__FILE__),"..","data")
+solutions = Dir.glob(File.join(path, 'solutions', '*')).map(&numerify).sort
+remaining = Dir.glob(File.join(path, 'cars', '*')).map(&numerify) - solutions
+remaining.sort!
+remaining.each {|r| p r if r > solutions.last }
