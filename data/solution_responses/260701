@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta content="IE=8" http-equiv="X-UA-Compatible"/><link href="/icfp10/static/styles/standard.css;jsessionid=2B957C51942F04C79941808BB36CE4B8" media="screen" type="text/css" rel="stylesheet"></link><link href="/icfp10/resources/dijit/themes/tundra/tundra.css;jsessionid=2B957C51942F04C79941808BB36CE4B8" type="text/css" rel="stylesheet"></link><link href="/icfp10/static/images/favicon.ico;jsessionid=2B957C51942F04C79941808BB36CE4B8" rel="SHORTCUT ICON"/><script type="text/javascript">
+			function readCookie(name) {
+				var nameEQ = name + '=';
+				var ca = document.cookie.split(';');
+				for(var i=0;i < ca.length;i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1,c.length);
+					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+				return null;
+			}
+			var djConfig={locale:readCookie('locale')}; 
+		</script><script type="text/javascript" src="/icfp10/resources/dojo/dojo.js;jsessionid=2B957C51942F04C79941808BB36CE4B8"></script><script type="text/javascript" src="/icfp10/resources/spring/Spring.js;jsessionid=2B957C51942F04C79941808BB36CE4B8"></script><script type="text/javascript" src="/icfp10/resources/spring/Spring-Dojo.js;jsessionid=2B957C51942F04C79941808BB36CE4B8"></script><script type="text/javascript" language="JavaScript">dojo.require("dojo.parser");</script><title>ICFP Programming Contest 2010</title></head><body class="tundra spring"><div id="wrapper"><div version="2.0" id="menu"><ul id="roo_menu"><li id="web_mvc_jsp_auth_category"><h2>Team</h2><ul><li id="web_mvc_jsp_create_auth_menu_item"><a href="/icfp10/static/j_spring_security_logout;jsessionid=2B957C51942F04C79941808BB36CE4B8">vorpal: Logout</a><a href="/icfp10/teamdetails/form;jsessionid=2B957C51942F04C79941808BB36CE4B8">Update Team Details</a></li></ul></li><li id="web_mvc_jsp_score_category"><h2>Score</h2><ul><li id="web_mvc_jsp_score_menu_item"><a href="/icfp10/score/teamAll;jsessionid=2B957C51942F04C79941808BB36CE4B8">Highscore</a></li></ul></li><li id="instance"><h2>Tools</h2><ul><li id="web_mvc_jsp_score_instance_menu_item"><a href="/icfp10/score/instanceTeamCount;jsessionid=2B957C51942F04C79941808BB36CE4B8">Submit fuel</a></li><li id="web_mvc_jsp_create_instance_menu_item"><a href="/icfp10/instance/form;jsessionid=2B957C51942F04C79941808BB36CE4B8">Submit a new car</a></li></ul></li></ul></div><div id="main"><div version="2.0"><script type="text/javascript">dojo.require('dijit.TitlePane');dojo.require('dijit.form.FilteringSelect');dojo.require('dijit.form.DateTextBox');</script><div id="_title_div"><script type="text/javascript">Spring.addDecoration(new Spring.ElementDecoration({elementId : '_title_div', widgetType : 'dijit.TitlePane', widgetAttrs : {title: 'Create new Fuel'}})); </script><pre>the contest is already finished</pre><form id="solution" action="/icfp10/instance/260701/solve;jsessionid=2B957C51942F04C79941808BB36CE4B8" method="POST"><div id="roo_solution_instance"><label for="_instance_id">Car:</label>122220010010010111102222100110000000000001010011000</div><br/><div id="roo_solution_contents"><label for="_contents_id">Fuel:</label><textarea id="_contents_id" name="contents" style="width:100%; height:100px;">66L:
+5R5L0#1R1L,
+0R0L0#2R2L,
+1R1L0#69L69R,
+7R7L0#4R4L,
+3R3L0#5R5L,
+4R4L0#0R0L,
+9R9L0#7R7L,
+6R6L0#3R3L,
+11R11L0#9R9L,
+8R8L0#6R6L,
+12R12L0#11R11L,
+10R10L0#8R8L,
+14R14L0#10R10L,
+16R16L0#14R14L,
+13R13L0#12R12L,
+17R17L0#16R16L,
+15R15L0#13R13L,
+20R20L0#15R15L,
+21R21L0#19R19L,
+18R18L0#20R20L,
+19R19L0#17R17L,
+23R23L0#18R18L,
+25R25L0#23R23L,
+22R22L0#21R21L,
+26R26L0#25R25L,
+24R24L0#22R22L,
+27R27L0#24R24L,
+30R30L0#26R26L,
+32R32L0#29R29L,
+28R28L0#30R30L,
+29R29L0#27R27L,
+33R33L0#32R32L,
+31R31L0#28R28L,
+36R36L0#31R31L,
+38R38L0#35R35L,
+34R34L0#36R36L,
+35R35L0#33R33L,
+40R40L0#38R38L,
+37R37L0#34R34L,
+41R41L0#40R40L,
+39R39L0#37R37L,
+44R44L0#39R39L,
+47R47L0#43R43L,
+42R42L0#44R44L,
+43R43L0#41R41L,
+49R49L0#46R46L,
+45R45L0#47R47L,
+46R46L0#42R42L,
+50R50L0#49R49L,
+48R48L0#45R45L,
+53R53L0#48R48L,
+56R56L0#52R52L,
+51R51L0#53R53L,
+52R52L0#50R50L,
+58R58L0#55R55L,
+54R54L0#56R56L,
+55R55L0#51R51L,
+59R59L0#58R58L,
+57R57L0#54R54L,
+62R62L0#57R57L,
+65R65L0#61R61L,
+60R60L0#62R62L,
+61R61L0#59R59L,
+68R68L0#64R64L,
+63R63L0#65R65L,
+64R64L0#60R60L,
+X70R0#67R67L,
+66R66L0#68R68L,
+67R67L0#63R63L,
+2L2R0#70L70R,
+69L69R0#X66R:
+70L
+</textarea><br/><script type="text/javascript">Spring.addDecoration(new Spring.ElementDecoration({elementId : '_contents_id', widgetType: 'dijit.form.SimpleTextarea', widgetAttrs : {promptMessage: 'Enter Contents (required)', invalidMessage: 'Please enter valid Contents', required : true}}));  </script></div><br/><div id="roo_solution_submit" class="submit"><script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script><input value="Submit" type="submit" id="proceed"/></div></form></div></div><div id="footer"><span><a href="/icfp10/;jsessionid=2B957C51942F04C79941808BB36CE4B8">Home</a></span> | <span><a href="/icfp10/static/j_spring_security_logout;jsessionid=2B957C51942F04C79941808BB36CE4B8">Logout</a></span></div></div></div></body></html>
