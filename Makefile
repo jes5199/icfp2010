@@ -7,11 +7,12 @@ build:
 	cd gen_circuit; ghc --make ParseCars
 	cd gen_circuit; ghc --make SolveCars
 	cd gen_circuit; ghc --make SolveCar
+	cd gen_circuit; ghc --make ShowCarAsEquation
 
 test:
 	cd gen_circuit; ./TestAll
 
 copy:
-	cd gen_circuit; cp CreateSubmission Main TestAll ParseCars SolveCars SolveCar ../bin
+	cd gen_circuit; cp CreateSubmission Main TestAll ParseCars SolveCars SolveCar ShowCarAsEquation ../bin
 
 .PHONY: all build copy test
