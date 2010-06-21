@@ -18,7 +18,7 @@ randomList len func gen = (elm:rest, gen'')
           (rest, gen'') = randomList (len-1) func gen'
 
 randomMatrix :: Int -> StdGen -> ([[Integer]], StdGen)
-randomMatrix size gen = randomList size (randomList size $ randomR (0,1) ) gen
+randomMatrix size gen = randomList size (randomList size $ randomR (0,4) ) gen
 
 randomFuelComponent :: Int -> StdGen -> ([[Integer]], StdGen)
 randomFuelComponent size gen = if matrix !! 0 !! 0 /= 0
@@ -58,7 +58,7 @@ carFactory count pipelen ingredientCount gen = chamberFactory count pipelen fuel
     where (fuel, gen') = randomFuel ingredientCount gen
 
 main = do gen <- getStdGen 
-          let ((car, fuel), gen') = carFactory 370 8 4 gen
+          let ((car, fuel), gen') = carFactory 180 16 4 gen
           putStrLn $ showCarAsEquations $ car
           putStrLn $ showFuelAsMatrices $ fuel
           print $ length car
@@ -70,7 +70,7 @@ main = do gen <- getStdGen
           print $ fuel_string
           let circuit = compileCircuit $ (map digitToInt) $ fuel_string
           putStrLn $ circuit
-          if isNothing $ solve car
+          if isNothing $ solve $ fst $ parseCar car_string
             then return ()
             else fail "too easy"
           args <- getArgs
