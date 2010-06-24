@@ -1,0 +1,19 @@
+#!/bin/bash
+function exit_usage {
+  echo "Usage: $0 <car_num> <fuel_stream>"
+  exit 1
+}
+
+if [ -z $2 ]; then
+  exit_usage
+fi
+if [ ! -z $3 ]; then
+  exit_usage
+fi
+
+SCRIPT_DIR=`dirname $0`
+
+CAR_NUM=$1
+FUEL_STREAM=$2
+
+echo $FUEL_STREAM | $SCRIPT_DIR/CreateSubmission | $SCRIPT_DIR/submit_fuel_fast $CAR_NUM

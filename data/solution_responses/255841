@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta content="IE=8" http-equiv="X-UA-Compatible"/><link href="/icfp10/static/styles/standard.css;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028" media="screen" type="text/css" rel="stylesheet"></link><link href="/icfp10/resources/dijit/themes/tundra/tundra.css;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028" type="text/css" rel="stylesheet"></link><link href="/icfp10/static/images/favicon.ico;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028" rel="SHORTCUT ICON"/><script type="text/javascript">
+			function readCookie(name) {
+				var nameEQ = name + '=';
+				var ca = document.cookie.split(';');
+				for(var i=0;i < ca.length;i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1,c.length);
+					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+				return null;
+			}
+			var djConfig={locale:readCookie('locale')}; 
+		</script><script type="text/javascript" src="/icfp10/resources/dojo/dojo.js;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028"></script><script type="text/javascript" src="/icfp10/resources/spring/Spring.js;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028"></script><script type="text/javascript" src="/icfp10/resources/spring/Spring-Dojo.js;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028"></script><script type="text/javascript" language="JavaScript">dojo.require("dojo.parser");</script><title>ICFP Programming Contest 2010</title></head><body class="tundra spring"><div id="wrapper"><div version="2.0" id="menu"><ul id="roo_menu"><li id="web_mvc_jsp_auth_category"><h2>Team</h2><ul><li id="web_mvc_jsp_create_auth_menu_item"><a href="/icfp10/static/j_spring_security_logout;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028">vorpal: Logout</a><a href="/icfp10/teamdetails/form;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028">Update Team Details</a></li></ul></li><li id="web_mvc_jsp_score_category"><h2>Score</h2><ul><li id="web_mvc_jsp_score_menu_item"><a href="/icfp10/score/teamAll;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028">Highscore</a></li></ul></li><li id="instance"><h2>Tools</h2><ul><li id="web_mvc_jsp_score_instance_menu_item"><a href="/icfp10/score/instanceTeamCount;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028">Submit fuel</a></li><li id="web_mvc_jsp_create_instance_menu_item"><a href="/icfp10/instance/form;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028">Submit a new car</a></li></ul></li></ul></div><div id="main"><div version="2.0">
+    You have submitted fuel for car 255841 with size 118. A special comment for you:
+<pre>
+circuit output starts with
+    11021210112101221
+this is a legal prefix
+you have produced fuel
+for 6 tanks
+using 1 ingredients of air
+checking reaction chamber 0
+checking reaction chamber 1
+checking reaction chamber 2
+checking reaction chamber 3
+Good! The car can use this fuel.
+</pre></div><div id="footer"><span><a href="/icfp10/;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028">Home</a></span> | <span><a href="/icfp10/static/j_spring_security_logout;jsessionid=4EF2ECF0313D7197E4E5E037B4D9E028">Logout</a></span></div></div></div></body></html>

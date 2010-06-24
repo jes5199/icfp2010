@@ -1,0 +1,12 @@
+#!/bin/bash
+username='vorpal'
+password='817346361913013919142157626495100946450967820619337166341550'
+
+CAR=$1
+
+URL="http://$username:$password@icfpcontest.org/icfp10/instance/$CAR/solve"
+
+PAYLOAD="contents=<-"
+
+dir=`dirname $0`/../
+curl $URL --form "$PAYLOAD" -m 120 | tee $dir/log/submit_fuel_fast.log

@@ -1,0 +1,13 @@
+#!/bin/bash
+username='vorpal'
+password='817346361913013919142157626495100946450967820619337166341550'
+
+CAR_PATH=$1.car
+FUEL_PATH=$1.fuel
+
+URL="http://$username:$password@icfpcontest.org/icfp10/instance"
+
+PAYLOAD="problem=<$CAR_PATH&exampleSolution.contents=<$FUEL_PATH"
+
+dir=`dirname $0`/../
+curl --form "problem=<$CAR_PATH" --form "exampleSolution.contents=<$FUEL_PATH" -m 120 $URL | tee $dir/log/submit_car.log

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+dir=`dirname $0`/../
+data=$dir/data/cars/
+
+for CAR in $data* ; do
+    CAR_ID=`basename $CAR`
+    FUEL=`$dir/bin/SolveCar < $CAR`
+    if [ ! -z "$FUEL" ] ; then
+        echo "we think $CAR_ID wants $FUEL"
+        echo "$FUEL" > $dir/data/solutions/$CAR_ID
+    else
+        echo "failing to fuel $CAR_ID"
+    fi
+done

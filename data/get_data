@@ -1,0 +1,9 @@
+#!/bin/bash
+
+user=vorpal
+pass=817346361913013919142157626495100946450967820619337166341550
+
+while read car; do
+  echo "Getting car $car..."
+  [ -f "cars/$car" ] || curl -s -u $user:$pass "http://icfpcontest.org/icfp10/instance/$car/solve/form" > "cars/$car.html" && echo "Success!" || echo "Failure! Car $car"
+done <all_cars.txt
